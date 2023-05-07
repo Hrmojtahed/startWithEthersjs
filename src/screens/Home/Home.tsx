@@ -1,8 +1,8 @@
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {colors} from '../utils/styles/color';
+import {colors} from '../../utils/styles/color';
 import {Button, IconButton, TextInput, Tooltip} from 'react-native-paper';
-import {createWallet, getBalance} from '../services/Api';
+import {createWallet, getBalance} from '../../services/Api';
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
