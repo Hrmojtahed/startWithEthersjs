@@ -1,8 +1,15 @@
-export const HomeScreens = {
-  Home: 'Home',
-};
+export enum HomeScreens {
+  Home = 'Home',
+}
 
-export const GalleryScreens = {
-  ListView: 'ListView',
-  DetailView: 'DetailView',
-};
+export enum GalleryScreens {
+  ListView = 'ListView',
+  DetailView = 'DetailView',
+}
+
+export enum RootScreens {
+  Root = 'Root',
+  DetailView = 'DetailView',
+}
+
+export type AppScreen = HomeScreens | GalleryScreens | RootScreens;

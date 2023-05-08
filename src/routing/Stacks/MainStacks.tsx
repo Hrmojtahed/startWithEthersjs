@@ -1,12 +1,17 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import type {PropsWithChildren} from 'react';
 import Home from '../../screens/Home/Home';
 import MainBottomTab from '../BottomTab/MainBottomTab';
 import DetailView from '../../screens/Gallary/DetailView';
 import {colors} from '../../utils/styles/color';
-const Stack = createNativeStackNavigator();
+import {RootStackParamList} from './type';
+import {RootScreens} from '../../screens/screen';
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainStacks(): JSX.Element {
   return (
@@ -15,12 +20,12 @@ function MainStacks(): JSX.Element {
         headerTintColor: colors.primary,
       }}>
       <Stack.Screen
-        name="Root"
+        name={RootScreens.Root}
         component={MainBottomTab}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="DetailView"
+        name={RootScreens.DetailView}
         component={DetailView}
         options={{title: 'Gallery', presentation: 'card'}}
       />
