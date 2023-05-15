@@ -1,52 +1,35 @@
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {colors} from '../../utils/styles/color';
 import {Button, IconButton, TextInput, Tooltip} from 'react-native-paper';
 import {createWallet, getBalance} from '../../services/Api';
+import {Web3Button, Web3Modal} from '@web3modal/react-native';
+import {useWeb3Modal} from '@web3modal/react-native';
+import {TouchableOpacity} from 'react-native';
+
+const PROJECT_ID: string = '8bc9db449b6b6c5e4cfd264e4248d27a';
+export const providerMetadata = {
+  name: 'React Native V2 dApp',
+  description: 'RN dApp by WalletConnect',
+  url: 'https://walletconnect.com/',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
 
 const Home = () => {
-  const [loading, setLoading] = useState(false);
-  const [walletInfo, setWalletInfo] = useState({});
-  const [isWalletCreated, setIsWalletCreated] = useState(false);
-  const getMyWalletBalance = async () => {
-    setLoading(true);
-    const address = '0x4d0E1CF61e3cCF0126DB2EF482A4328f10B448A5';
-    const balance = await getBalance(address);
-    console.log(balance);
-    setLoading(false);
-    return Alert.alert('Your Balance is', balance + ' ETH');
-  };
+  const {isOpen, open, close, provider, isConnected} = useWeb3Modal();
 
-  const createNewWallet = async () => {
-    setLoading(true);
-    const wallet = await createWallet();
-    setLoading(false);
-    setIsWalletCreated(true);
-    setWalletInfo(wallet);
+  const openModal = async () => {
+    await open({route: 'ConnectWallet'});
   };
   return (
     <View style={styles.container}>
-      <Text>
-        For create a new wallet, tap button below. we will show some information
-        about your new wallet.
-      </Text>
-      <Button
-        // icon="camera"
-        mode="elevated"
-        style={{marginTop: 24}}
-        onPress={createNewWallet}
-        loading={loading}>
-        Create new wallet
-      </Button>
-      <View style={styles.line} />
-      {isWalletCreated && (
-        <View>
-          <Text>Your wallet address : {walletInfo.address}</Text>
-          <Text style={{marginTop: 20}}>
-            Your wallet private key : {walletInfo.privateKey}
-          </Text>
-        </View>
-      )}
+      <TouchableOpacity
+        onPress={openModal}
+        style={styles.btn}
+        activeOpacity={0.8}>
+        <Text style={styles.btnText}>Connect to Wallet</Text>
+      </TouchableOpacity>
+      <Web3Modal projectId={PROJECT_ID} providerMetadata={providerMetadata} />
     </View>
   );
 };
@@ -58,11 +41,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 24,
+    alignItems: 'center',
   },
   line: {
     width: '100%',
     height: 1,
     backgroundColor: '#333',
     marginVertical: 24,
+  },
+  btn: {
+    width: '100%',
+    height: 50,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+  },
+  btnText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: colors.lightGray,
   },
 });
