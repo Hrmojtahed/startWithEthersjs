@@ -22,7 +22,6 @@ const DetailView = ({
   return (
     <View style={styles.container}>
       <Picture source={image} style={styles.img} resizeMode="contain" />
-      <Button onPress={() => navigation.pop()} title="Test"></Button>
     </View>
   );
 };
@@ -38,6 +37,6 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
-    height: 300,
+    height: '100%',
   },
 });
