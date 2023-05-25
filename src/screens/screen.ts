@@ -1,5 +1,5 @@
 export enum HomeScreens {
-  Home = 'Home',
+  Home = 'HomeScreen',
 }
 
 export enum GalleryScreens {

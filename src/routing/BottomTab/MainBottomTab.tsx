@@ -51,6 +51,7 @@ const MainBottomTab = (): JSX.Element => {
           headerStyle: {
             backgroundColor: colors.white,
           },
+          headerShown: false,
         }}></Tab.Screen>
     </Tab.Navigator>
   );

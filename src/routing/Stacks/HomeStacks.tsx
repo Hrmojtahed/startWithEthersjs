@@ -6,20 +6,15 @@ import {
 } from '@react-navigation/native-stack';
 import Home from '../../screens/Home/Home';
 import {StatusBar} from 'react-native';
+import {HomeScreens} from '../../screens/screen';
+import {HomeStackParamList, HomeStackScreenProp} from './type';
 
-const HStack = createNativeStackNavigator();
-type RootStackParamList = {
-  HomeScreen: undefined;
-};
+const HStack = createNativeStackNavigator<HomeStackParamList>();
 
-interface Props {
-  navigation: NativeStackScreenProps<RootStackParamList>;
-}
-
-const HomeStacks = ({navigation}: Props) => {
+const HomeStacks = () => {
   return (
-    <HStack.Navigator screenOptions={{headerShown: false}}>
-      <HStack.Screen name="HomeScreen" component={Home} />
+    <HStack.Navigator screenOptions={{headerShown: true}}>
+      <HStack.Screen name={HomeScreens.Home} component={Home} />
     </HStack.Navigator>
   );
 };
