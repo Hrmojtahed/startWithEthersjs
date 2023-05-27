@@ -17,7 +17,7 @@ import {
   useAppNavigation,
   useHomeNavigation,
 } from '../../routing/Stacks/type';
-import {getProvider} from '../../features/provider';
+
 import {useSelector} from 'react-redux';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
@@ -25,24 +25,12 @@ import {
   disconnectWallet,
 } from '../../store/reducers/slices/walletSlice';
 
-const useOnBlockUpdated = (callback: (blockNumber: number) => void) => {
-  useEffect(() => {
-    const subscription = getProvider()?.on('block', callback);
-
-    return () => {
-      subscription?.removeAllListeners();
-    };
-  });
-};
-
 const Home = () => {
   const {isOpen, open, close, provider, isConnected} = useWeb3Modal();
   const navigation = useHomeNavigation();
   const [blockNumber, setBlockNumber] = useState(0);
   const isWalletConnected = useAppSelector(state => state.wallet.isConnected);
   const dispatch = useAppDispatch();
-
-  useOnBlockUpdated(async val => setBlockNumber(val));
 
   useLayoutEffect(() => {
     navigation.setOptions({

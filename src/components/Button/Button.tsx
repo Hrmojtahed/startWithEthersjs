@@ -7,46 +7,52 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
-import {ButtonType} from './type';
+import React, {Children} from 'react';
+import {ButtonType, ButtonTypeEnum} from './type';
 import {TouchableOpacity} from 'react-native';
 import {colors} from '../../utils/styles/color';
+import {Typography} from '../../utils/styles/typography';
 
-type Props = {
-  type: ButtonType;
+type Props = TouchableOpacityProps & {
+  type?: ButtonType;
   text?: string;
   children?: JSX.Element;
   icon?: JSX.Element;
-  otherProps?: TouchableOpacityProps;
+
   buttonStyle?: ViewStyle;
   textStyle?: TextStyle;
 };
 
 const Button: React.FC<Props> = ({
-  type,
-  otherProps,
+  type = 'fill',
+
   text,
   buttonStyle,
   textStyle,
+  children,
+  disabled,
+  ...props
 }) => {
   return (
     <TouchableOpacity
-      {...otherProps}
+      activeOpacity={0.8}
+      {...props}
       style={[
         styles.btnDefault,
-        type == ButtonType.Outline ? styles.outlineBtn : {},
-        otherProps?.disabled ? styles.disabled : {},
+        type == ButtonTypeEnum.Outline ? styles.outlineBtn : {},
+        disabled ? styles.disabled : {},
         buttonStyle,
       ]}>
       {text && (
         <Text
           style={[
             styles.defaultText,
-            type == ButtonType.Outline ? styles.outlineText : {},
+            type == ButtonTypeEnum.Outline ? styles.outlineText : {},
           ]}>
           {text}
         </Text>
       )}
+      {children}
     </TouchableOpacity>
   );
 };
@@ -63,6 +69,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.primary,
+    paddingHorizontal: 15,
+    width: '100%',
   },
   outlineBtn: {
     borderWidth: 1,
@@ -73,9 +81,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   defaultText: {
+    ...Typography.title3,
     color: colors.lightGray,
-    fontSize: 14,
-    fontWeight: 'bold',
   },
   outlineText: {
     color: colors.primary,

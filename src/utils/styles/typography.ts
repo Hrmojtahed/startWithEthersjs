@@ -17,37 +17,37 @@ export const Typography: StyleType = {
   title1: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: colors.primary,
+    color: colors.secondary,
   },
   title2: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: colors.primary,
+    color: colors.secondary,
   },
   title3: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: colors.primary,
+    color: colors.secondary,
   },
   title4: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: colors.primary,
+    color: colors.secondary,
   },
   body1: {
     fontSize: 16,
     fontWeight: 'normal',
-    color: colors.gray,
+    color: colors.primary,
   },
   body2: {
     fontSize: 14,
     fontWeight: 'normal',
-    color: colors.gray,
+    color: colors.primary,
   },
   body3: {
     fontSize: 12,
     fontWeight: 'normal',
-    color: colors.gray,
+    color: colors.primary,
   },
   subtitle1: {
     fontSize: 12,
