@@ -1,8 +1,7 @@
-import {ImageRequireSource, StyleSheet, Text, View} from 'react-native';
+import {ImageRequireSource, StyleSheet} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Picture from '../Picture/Picture';
-import {Source} from 'react-native-fast-image';
 import {
   GALLERY_GAP_SIZE,
   GALLERY_ITEM_SIZE,

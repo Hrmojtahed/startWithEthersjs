@@ -1,13 +1,11 @@
 import {
-  ButtonProps,
   StyleSheet,
   Text,
   TextStyle,
   TouchableOpacityProps,
-  View,
   ViewStyle,
 } from 'react-native';
-import React, {Children} from 'react';
+import React from 'react';
 import {ButtonType, ButtonTypeEnum} from './type';
 import {TouchableOpacity} from 'react-native';
 import {colors} from '../../utils/styles/color';
@@ -94,7 +92,7 @@ const styles = StyleSheet.create({
   },
   defaultText: {
     ...Typography.title3,
-    color: colors.lightGray,
+    color: colors.white,
   },
   outlineText: {
     color: colors.primary,

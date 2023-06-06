@@ -1,7 +1,7 @@
-import {StyleProp, TextStyle} from 'react-native';
+import {TextStyle} from 'react-native';
 import {colors} from './color';
 
-type StyleType = {
+export type TypograpghiVariant = {
   title1: TextStyle;
   title2: TextStyle;
   title3: TextStyle;
@@ -13,7 +13,7 @@ type StyleType = {
   subtitle2: TextStyle;
 };
 
-export const Typography: StyleType = {
+export const Typography: TypograpghiVariant = {
   title1: {
     fontSize: 18,
     fontWeight: 'bold',

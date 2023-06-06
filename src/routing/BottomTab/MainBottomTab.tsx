@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import GalleryStacks from '../Stacks/GalleryStacks';
@@ -33,7 +33,8 @@ const MainBottomTab = (): JSX.Element => {
           headerStyle: {
             backgroundColor: colors.primary,
           },
-        }}></Tab.Screen>
+        }}
+      />
       <Tab.Screen
         name="Wallet"
         component={HomeStacks}
@@ -52,7 +53,8 @@ const MainBottomTab = (): JSX.Element => {
             backgroundColor: colors.white,
           },
           headerShown: false,
-        }}></Tab.Screen>
+        }}
+      />
     </Tab.Navigator>
   );
 };

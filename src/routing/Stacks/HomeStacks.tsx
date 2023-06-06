@@ -1,9 +1,6 @@
-import {StatusBarStyle, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
+import {StyleSheet} from 'react-native';
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Onboarding from '../../screens/Home/Onboarding';
 
 import {HomeScreens} from '../../screens/screen';

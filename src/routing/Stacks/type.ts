@@ -1,5 +1,5 @@
 import {ImageRequireSource} from 'react-native';
-import {HomeScreens, GalleryScreens, RootScreens} from '../../screens/screen';
+import {HomeScreens, RootScreens} from '../../screens/screen';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,

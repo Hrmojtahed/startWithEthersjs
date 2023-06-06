@@ -1,11 +1,6 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
-import type {PropsWithChildren} from 'react';
-import Onboarding from '../../screens/Home/Onboarding';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainBottomTab from '../BottomTab/MainBottomTab';
 import DetailView from '../../screens/Gallary/DetailView';
 import {colors} from '../../utils/styles/color';

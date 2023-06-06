@@ -14,6 +14,8 @@ type Props = {
   label?: string;
   containerStyle?: ViewStyle;
   labelStyle?: TextStyle;
+  icon?: React.ReactElement;
+  iconPosition: 'left' | 'right';
 } & TextInputProps;
 
 const TextInput: React.FC<Props> = ({
@@ -21,16 +23,26 @@ const TextInput: React.FC<Props> = ({
   containerStyle,
   label,
   labelStyle,
+  icon,
+  iconPosition,
   ...props
 }) => {
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.wrapper, containerStyle]}>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-      <TextInputBase
-        style={[styles.default, style]}
-        placeholderTextColor={colors.gray}
-        {...props}
-      />
+      <View
+        style={[
+          styles.container,
+          {flexDirection: iconPosition == 'left' ? 'row' : 'row-reverse'},
+        ]}>
+        {icon}
+        {icon && <View style={styles.seprator} />}
+        <TextInputBase
+          style={[styles.inputDefaultStyle, style]}
+          placeholderTextColor={colors.gray}
+          {...props}
+        />
+      </View>
     </View>
   );
 };
@@ -38,14 +50,23 @@ const TextInput: React.FC<Props> = ({
 export default TextInput;
 
 const styles = StyleSheet.create({
-  default: {
+  wrapper: {
+    width: '100%',
+  },
+  container: {
     height: 45,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.gray,
-    width: '100%',
     paddingHorizontal: 16,
     backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputDefaultStyle: {
+    height: '100%',
+    flex: 1,
+    backgroundColor: colors.none,
     color: colors.primary,
     fontSize: 14,
   },
@@ -56,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     paddingLeft: 4,
   },
-  container: {
-    width: '100%',
+  seprator: {
+    width: 16,
   },
 });

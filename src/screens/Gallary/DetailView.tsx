@@ -1,15 +1,8 @@
-import {Button, ImageRequireSource, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {
-  RootStackNavigationProp,
-  RootStackParamList,
-  RootStackScreenProp,
-} from '../../routing/Stacks/type';
+import {StyleSheet, View} from 'react-native';
+import React from 'react';
+import type {RootStackScreenProp} from '../../routing/Stacks/type';
 import Picture from '../../components/Picture/Picture';
 import {RootScreens} from '../screen';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigatorProps} from '@react-navigation/native-stack/lib/typescript/src/types';
 
 // type Prop = NativeStackScreenProps<RootStackParamList, RootScreens.DetailView>;
 

@@ -6,7 +6,6 @@
  */
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import MainStacks from './src/routing/Stacks/MainStacks';
 

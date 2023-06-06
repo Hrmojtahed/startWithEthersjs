@@ -1,11 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {colors} from '../../utils/styles/color';
 import {FlatList} from 'react-native';
 import {ImageList} from '../../assets/images';
 import GalleryListItem from '../../components/Gallery/GalleryListItem';
 import {GALLERY_LIST_COLUMN_NUM} from '../../utils/constants/galleryConstants';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 interface componentProps {
   // navigation: NativeStackScreenProps<any>;

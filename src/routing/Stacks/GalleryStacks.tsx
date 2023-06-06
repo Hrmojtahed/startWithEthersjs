@@ -1,19 +1,10 @@
-import {
-  ImageRequireSource,
-  StatusBarProps,
-  StatusBarStyle,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import React from 'react';
 import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import ListView from '../../screens/Gallary/ListView';
-import DetailView from '../../screens/Gallary/DetailView';
-import {StatusBar} from 'react-native';
 import {RootStackParamList} from './type';
 
 const GStack = createNativeStackNavigator();

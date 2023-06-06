@@ -1,4 +1,4 @@
-import React, {Component, ErrorInfo} from 'react';
+import React, {ErrorInfo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Button from '../components/Button/Button';
 import RNRestart from 'react-native-restart';

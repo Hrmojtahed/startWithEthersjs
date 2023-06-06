@@ -23,7 +23,9 @@ export const importWalletApi = createApi({
 
           if (dataType == WalletImportEnum.Seed) {
             wallet = await importWalletFromSeedPhrase(data);
-          } else wallet = await importWalletFromPrivateKey(data);
+          } else {
+            wallet = await importWalletFromPrivateKey(data);
+          }
           if (wallet == null) {
             return {error: {status: 404, data: 'Wallet not found!'}};
           }

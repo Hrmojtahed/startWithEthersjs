@@ -1,11 +1,5 @@
-import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {
-  useCallback,
-  useEffect,
-  useInsertionEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
 import {colors} from '../../utils/styles/color';
 
 import {
@@ -13,7 +7,7 @@ import {
   useHomeNavigation,
 } from '../../routing/Stacks/type';
 
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {useAppDispatch} from '../../store/hooks';
 
 import Button from '../../components/Button/Button';
 import TextInput from '../../components/Input/TextInput';
@@ -29,7 +23,8 @@ import {
 } from '../../features/wallet/utils';
 import {addAccount, removeAllAccounts} from '../../features/wallet/walletSlice';
 import {HomeScreens} from '../screen';
-import {Account} from '../../features/wallet/accounts/type';
+import Text from '../../components/Text/Text';
+import * as Clipboard from 'expo-clipboard';
 
 type Props = HomeStackScreenProp<HomeScreens.Home>;
 
@@ -89,10 +84,17 @@ function Onboarding(): React.ReactElement<Props> {
     return Alert.alert('Somthing went wrong', `${error.data}`);
   }
 
+  const pasteFromClipboard = async () => {
+    const text = await Clipboard.getStringAsync();
+    setUserInput(text);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={[Typography.title1, styles.title]}>Import Wallet</Text>
-      <Text style={styles.subtitle}>
+      <Text style={[styles.title]} variant="title1">
+        Import Wallet
+      </Text>
+      <Text variant="body3" style={styles.subtitle}>
         Enter your phrase or private key to import your wallet
       </Text>
       <TextInput
@@ -100,6 +102,12 @@ function Onboarding(): React.ReactElement<Props> {
         containerStyle={{marginBottom: spacing.spacing24}}
         onChangeText={val => setUserInput(val)}
         value={userInput}
+        iconPosition="right"
+        icon={
+          <Text variant="title4" onPress={pasteFromClipboard}>
+            Paste
+          </Text>
+        }
       />
       <Button
         text="Import"
@@ -138,10 +146,9 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginBottom: spacing.spacing12,
+    marginBottom: spacing.spacing8,
   },
   subtitle: {
-    ...Typography.body2,
     marginBottom: spacing.spacing24,
   },
 });

@@ -3,8 +3,8 @@ export const colors = {
   black: '#000',
   none: 'transparent',
 
-  lightGray: '#F1F6F9',
+  lightGray: '#9BA4B5',
   primary: '#394867',
   secondary: '#212A3E',
-  gray: '#9BA4B5',
+  gray: '#7E8AA0', // 9BA4B5
 };

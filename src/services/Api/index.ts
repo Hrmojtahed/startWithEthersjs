@@ -6,7 +6,6 @@ import '@ethersproject/shims';
 
 // Import the ethers library
 import {ethers} from 'ethers';
-import {API_PROVIDER, TEST_ETH_BLOCKCHAIN} from '../constants';
 import {getProvider} from '../../libs/provider';
 
 export const provider = getProvider();

@@ -12,7 +12,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3AC6C2B0CEA168BD1B1BEFD9 /* libPods-simpleBlockChainApp-simpleBlockChainAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A8045F3237539BC0BB95FA9 /* libPods-simpleBlockChainApp-simpleBlockChainAppTests.a */; };
+		7CE13F7578E53B0B56CC61A2 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E64B7D6140A3ECF23011DD /* ExpoModulesProvider.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		974BDB2CC92C3344496852A1 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570986E0D245487EE28B8793 /* ExpoModulesProvider.swift */; };
 		DB25E22991D802A5E3E704F4 /* libPods-simpleBlockChainApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D99584025E16597480A6A1 /* libPods-simpleBlockChainApp.a */; };
 		E8CEE3B72A0417E400AE4712 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8CEE3A72A0417E300AE4712 /* Fontisto.ttf */; };
 		E8CEE3B82A0417E400AE4712 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8CEE3A82A0417E300AE4712 /* Octicons.ttf */; };
@@ -55,6 +57,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = simpleBlockChainApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = simpleBlockChainApp/main.m; sourceTree = "<group>"; };
 		4578081609E114C18D0F8B7C /* Pods-simpleBlockChainApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simpleBlockChainApp.debug.xcconfig"; path = "Target Support Files/Pods-simpleBlockChainApp/Pods-simpleBlockChainApp.debug.xcconfig"; sourceTree = "<group>"; };
+		56E64B7D6140A3ECF23011DD /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-simpleBlockChainApp-simpleBlockChainAppTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		570986E0D245487EE28B8793 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-simpleBlockChainApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		65C0EA82ADD57FE1B815E6B3 /* Pods-simpleBlockChainApp-simpleBlockChainAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simpleBlockChainApp-simpleBlockChainAppTests.debug.xcconfig"; path = "Target Support Files/Pods-simpleBlockChainApp-simpleBlockChainAppTests/Pods-simpleBlockChainApp-simpleBlockChainAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		76D99584025E16597480A6A1 /* libPods-simpleBlockChainApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simpleBlockChainApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = simpleBlockChainApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				979D70B94BB2ADA0AD57683E /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -173,6 +178,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		979D70B94BB2ADA0AD57683E /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				CB31BDA85C266BFA59721461 /* simpleBlockChainApp */,
+				B0C24C23FBF582566A2211EE /* simpleBlockChainAppTests */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		B0C24C23FBF582566A2211EE /* simpleBlockChainAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				56E64B7D6140A3ECF23011DD /* ExpoModulesProvider.swift */,
+			);
+			name = simpleBlockChainAppTests;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +204,14 @@
 				D0BC085EE51DB72A55EF1B48 /* Pods-simpleBlockChainApp-simpleBlockChainAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CB31BDA85C266BFA59721461 /* simpleBlockChainApp */ = {
+			isa = PBXGroup;
+			children = (
+				570986E0D245487EE28B8793 /* ExpoModulesProvider.swift */,
+			);
+			name = simpleBlockChainApp;
 			sourceTree = "<group>";
 		};
 		E8CEE3A62A0417E300AE4712 /* Fonts */ = {
@@ -481,6 +511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* simpleBlockChainAppTests.m in Sources */,
+				7CE13F7578E53B0B56CC61A2 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +521,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				974BDB2CC92C3344496852A1 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +546,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = simpleBlockChainAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -525,6 +557,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/simpleBlockChainApp.app/simpleBlockChainApp";
@@ -538,7 +571,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = simpleBlockChainAppTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -549,6 +582,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/simpleBlockChainApp.app/simpleBlockChainApp";
@@ -575,6 +609,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = simpleBlockChainApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -602,6 +637,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = simpleBlockChainApp;
 				SWIFT_VERSION = 5.0;
@@ -658,7 +694,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -723,7 +759,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
