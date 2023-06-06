@@ -16,12 +16,16 @@ const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    addAccount: (state, action: PayloadAction<Wallet>) => {
+    addAccount: (state, action: PayloadAction<Account>) => {
       let {address} = action.payload;
       if (state.accounts[address]) {
         throw new Error('This wallet already exist!');
       } else {
         state.accounts[action.payload.address] = action.payload;
+        state.accounts[action.payload.address].accountName = `Account ${
+          Object(state.accounts).keys().length + 1
+        }`;
+
         state.walletImported = true;
       }
     },
@@ -44,14 +48,14 @@ const walletSlice = createSlice({
         throw new Error(`Cannot edit missing account ${address}`);
       state.accounts[address] = updatedAccount;
     },
-    removeAllAccount: state => {
+    removeAllAccounts: state => {
       state.accounts = {};
       state.walletImported = false;
     },
   },
 });
 
-export const {addAccount, removeAccount, editAccount, removeAllAccount} =
+export const {addAccount, removeAccount, editAccount, removeAllAccounts} =
   walletSlice.actions;
 
 export default walletSlice.reducer;

@@ -5,14 +5,14 @@ import {
   importWalletFromPrivateKey,
   importWalletFromSeedPhrase,
 } from '../wallet/wallet';
-import {logger} from '../../utils/logger';
-import {SerializedError} from '@reduxjs/toolkit';
+
+import {Account} from '../wallet/accounts/type';
 
 export const importWalletApi = createApi({
   reducerPath: 'importWalletApi',
   baseQuery: fetchBaseQuery({baseUrl: '/'}),
   endpoints: builder => ({
-    getWalletByKey: builder.query<Wallet, string>({
+    getWalletByKey: builder.query<Account, string>({
       queryFn: async (data: string) => {
         try {
           if (data == null || data == '') {
@@ -27,6 +27,7 @@ export const importWalletApi = createApi({
           if (wallet == null) {
             return {error: {status: 404, data: 'Wallet not found!'}};
           }
+
           return {data: wallet};
         } catch (error: any) {
           return {error: {status: 500, data: error}};

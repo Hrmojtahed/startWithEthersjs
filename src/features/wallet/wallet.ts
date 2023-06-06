@@ -1,6 +1,7 @@
 import {Wallet} from 'ethers';
 import {getProvider} from '../../libs/provider';
 import {WalletImportEnum, checkSeedPhraseOrPrivateKey} from './utils';
+import {Account} from './accounts/type';
 
 const provider = getProvider();
 

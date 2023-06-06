@@ -1,3 +1,7 @@
 import {Wallet} from 'ethers';
 
-export type Account = Wallet;
+type AccountBase = {
+  accountName?: string;
+};
+
+export type Account = Wallet & AccountBase;

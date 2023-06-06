@@ -21,17 +21,15 @@ import {Typography} from '../../utils/styles/typography';
 import {spacing} from '../../utils/styles/sizing';
 
 import {logger} from '../../utils/logger';
-import {getProvider} from '../../libs/provider';
-import {Wallet, ethers} from 'ethers';
+
 import {useGetWalletByKeyQuery} from '../../features/walletConnect/api';
 import {
   WalletImportEnum,
   checkSeedPhraseOrPrivateKey,
 } from '../../features/wallet/utils';
-import {addAccount, removeAllAccount} from '../../features/wallet/walletSlice';
+import {addAccount, removeAllAccounts} from '../../features/wallet/walletSlice';
 import {HomeScreens} from '../screen';
-
-const provider = getProvider();
+import {Account} from '../../features/wallet/accounts/type';
 
 type Props = HomeStackScreenProp<HomeScreens.Home>;
 
@@ -65,7 +63,7 @@ function Onboarding(): React.ReactElement<Props> {
     setIsTaped(true);
   };
   const handleRemove = () => {
-    dispatch(removeAllAccount());
+    dispatch(removeAllAccounts());
   };
   if (walletData?.address && walletImportLoading == false) {
     setIsTaped(false);
