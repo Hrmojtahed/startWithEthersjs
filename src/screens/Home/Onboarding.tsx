@@ -11,7 +11,7 @@ import {useAppDispatch} from '../../store/hooks';
 
 import Button from '../../components/Button/Button';
 import TextInput from '../../components/Input/TextInput';
-import {Typography} from '../../utils/styles/typography';
+
 import {spacing} from '../../utils/styles/sizing';
 
 import {logger} from '../../utils/logger';
@@ -24,7 +24,7 @@ import {
 import {addAccount, removeAllAccounts} from '../../features/wallet/walletSlice';
 import {HomeScreens} from '../screen';
 import Text from '../../components/Text/Text';
-import * as Clipboard from 'expo-clipboard';
+import {getClipboard} from '../../utils/clipboard';
 
 type Props = HomeStackScreenProp<HomeScreens.Home>;
 
@@ -85,8 +85,10 @@ function Onboarding(): React.ReactElement<Props> {
   }
 
   const pasteFromClipboard = async () => {
-    const text = await Clipboard.getStringAsync();
-    setUserInput(text);
+    const clipboard = await getClipboard();
+    if (clipboard) {
+      setUserInput(clipboard);
+    }
   };
 
   return (

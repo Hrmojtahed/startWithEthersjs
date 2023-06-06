@@ -10,6 +10,8 @@ import {
 import {useHomeNavigation} from '../../routing/Stacks/type';
 import {HomeScreens} from '../screen';
 import Text from '../../components/Text/Text';
+import AddressDisplay from '../../components/AddressDisplay';
+import {spacing} from '../../utils/styles/sizing';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -22,10 +24,13 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text variant="title2">{account.accountName}</Text>
-      <Text variant="subtitle2" numberOfLines={1}>
-        {account.address}
-      </Text>
-      <Button text="Delete Account" onPress={removeAccount} />
+      <AddressDisplay address={account.address} />
+      <View style={styles.balanceContainer}>
+        <Text variant="body3" style={styles.balanceTitle}>
+          Your Balance{' '}
+        </Text>
+        <Text variant="title1">0.3242343 {'MATIC'}</Text>
+      </View>
     </View>
   );
 };
@@ -37,5 +42,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 24,
+  },
+  balanceContainer: {
+    marginTop: spacing.spacing48,
+    alignItems: 'center',
+  },
+  balanceTitle: {
+    marginBottom: spacing.spacing8,
   },
 });

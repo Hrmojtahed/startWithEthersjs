@@ -2,6 +2,8 @@
  * @format
  */
 
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
 // Import the crypto getRandomValues shim BEFORE ethers shims
 import 'react-native-get-random-values';
 // Import the the ethers shims BEFORE ethers
