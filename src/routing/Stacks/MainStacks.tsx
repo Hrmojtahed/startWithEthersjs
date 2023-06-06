@@ -5,7 +5,7 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import type {PropsWithChildren} from 'react';
-import Home from '../../screens/Home/Home';
+import Onboarding from '../../screens/Home/Onboarding';
 import MainBottomTab from '../BottomTab/MainBottomTab';
 import DetailView from '../../screens/Gallary/DetailView';
 import {colors} from '../../utils/styles/color';

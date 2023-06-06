@@ -35,12 +35,12 @@ const MainBottomTab = (): JSX.Element => {
           },
         }}></Tab.Screen>
       <Tab.Screen
-        name="Home"
+        name="Wallet"
         component={HomeStacks}
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <Ionicons
-              name={focused ? 'home' : 'home-outline'}
+              name={focused ? 'wallet' : 'wallet-outline'}
               size={size}
               color={color}
             />

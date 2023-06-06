@@ -12,6 +12,8 @@ import {ButtonType, ButtonTypeEnum} from './type';
 import {TouchableOpacity} from 'react-native';
 import {colors} from '../../utils/styles/color';
 import {Typography} from '../../utils/styles/typography';
+import {ActivityIndicator} from 'react-native';
+import {spacing} from '../../utils/styles/sizing';
 
 type Props = TouchableOpacityProps & {
   type?: ButtonType;
@@ -21,6 +23,7 @@ type Props = TouchableOpacityProps & {
 
   buttonStyle?: ViewStyle;
   textStyle?: TextStyle;
+  loading?: boolean;
 };
 
 const Button: React.FC<Props> = ({
@@ -31,11 +34,13 @@ const Button: React.FC<Props> = ({
   textStyle,
   children,
   disabled,
+  loading,
   ...props
 }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
+      disabled={disabled}
       {...props}
       style={[
         styles.btnDefault,
@@ -43,6 +48,13 @@ const Button: React.FC<Props> = ({
         disabled ? styles.disabled : {},
         buttonStyle,
       ]}>
+      {loading ? (
+        <ActivityIndicator
+          animating={loading}
+          color={colors.white}
+          style={styles.loading}
+        />
+      ) : null}
       {text && (
         <Text
           style={[
@@ -86,5 +98,8 @@ const styles = StyleSheet.create({
   },
   outlineText: {
     color: colors.primary,
+  },
+  loading: {
+    marginRight: spacing.spacing8,
   },
 });

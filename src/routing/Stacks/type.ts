@@ -13,6 +13,7 @@ export type RootStackParamList = {
 
 export type HomeStackParamList = {
   [HomeScreens.Home]: undefined;
+  [HomeScreens.Onboarding]: undefined;
 };
 export type RootStackScreenProp<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;

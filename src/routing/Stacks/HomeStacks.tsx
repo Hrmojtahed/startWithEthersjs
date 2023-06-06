@@ -4,19 +4,24 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import Home from '../../screens/Home/Home';
-import {StatusBar} from 'react-native';
+import Onboarding from '../../screens/Home/Onboarding';
+
 import {HomeScreens} from '../../screens/screen';
-import {HomeStackParamList, HomeStackScreenProp} from './type';
-import WalletPage from '../../screens/Home/Wallet';
+import {HomeStackParamList} from './type';
+import {useAppSelector} from '../../store/hooks';
+import Home from '../../screens/Home/Home';
 
 const HStack = createNativeStackNavigator<HomeStackParamList>();
 
 const HomeStacks = () => {
+  const isImportedWallet = useAppSelector(state => state.wallet.walletImported);
   return (
     <HStack.Navigator
-      screenOptions={{headerShown: true}}
-      initialRouteName={HomeScreens.Home}>
+      screenOptions={{headerShown: true, title: 'Wallet'}}
+      initialRouteName={
+        isImportedWallet ? HomeScreens.Home : HomeScreens.Onboarding
+      }>
+      <HStack.Screen name={HomeScreens.Onboarding} component={Onboarding} />
       <HStack.Screen name={HomeScreens.Home} component={Home} />
     </HStack.Navigator>
   );

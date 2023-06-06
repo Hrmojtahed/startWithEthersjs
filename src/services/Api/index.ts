@@ -7,10 +7,9 @@ import '@ethersproject/shims';
 // Import the ethers library
 import {ethers} from 'ethers';
 import {API_PROVIDER, TEST_ETH_BLOCKCHAIN} from '../constants';
+import {getProvider} from '../../libs/provider';
 
-export const provider = new ethers.providers.JsonRpcProvider(
-  TEST_ETH_BLOCKCHAIN,
-);
+export const provider = getProvider();
 
 export const getBalance = async (address: String) => {
   const balance = await provider.getBalance(address.toString());
@@ -20,7 +19,7 @@ export const getBalance = async (address: String) => {
 export const createWallet = async (
   prov: ethers.providers.Provider = provider,
 ) => {
-  const wallet = await ethers.Wallet.createRandom().connect(prov);
+  const wallet = ethers.Wallet.createRandom().connect(prov);
 
   return wallet;
 };

@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {Storage, persistReducer, persistStore} from 'redux-persist';
 import {MMKV} from 'react-native-mmkv';
 import {rootReducers} from './reducers/rootReducers';
+import {importWalletApi} from '../features/walletConnect/api';
 
 const storage = new MMKV();
 
@@ -28,7 +29,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducers);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({serializableCheck: false}),
+    getDefaultMiddleware({serializableCheck: false}).concat(
+      importWalletApi.middleware,
+    ),
 });
 export const persistor = persistStore(store);
 
