@@ -88,8 +88,6 @@ export function BottomSheetModal({
   const fullScreenContentHeight =
     (renderBehindInset ? 1 : FULL_HEIGHT) * height;
 
-  const backdrop = {backdropComponent: renderBackdrop};
-
   const onAnimate = useCallback(
     (fromIndex: number, toIndex: number): void => {
       if (
@@ -112,6 +110,7 @@ export function BottomSheetModal({
       handleHeight={animatedHandleHeight}
       snapPoints={animatedSnapPoints}
       topInset={renderBehindInset ? undefined : insets.top}
+      backdropComponent={renderBackdrop}
       onAnimate={onAnimate}
       onDismiss={onClose}>
       <BottomSheetView

@@ -1,6 +1,6 @@
 import React, {ErrorInfo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Button from '../components/Button/Button';
+import {Button} from '../components/Button/Button';
 import RNRestart from 'react-native-restart';
 import {colors} from '../utils/styles/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -50,9 +50,9 @@ function ErrorScreen({error}: {error: Error}) {
         )}
       </View>
       <Button
-        text="Restart App"
+        label="Restart App"
         onPress={resetApp}
-        buttonStyle={{marginBottom: safeArea.bottom}}
+        customStyle={{Button: {marginBottom: safeArea.bottom}}}
       />
     </View>
   );
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     alignItems: 'center',
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.white,
   },
   errorContainer: {
     flex: 1,

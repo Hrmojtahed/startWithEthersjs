@@ -2,7 +2,35 @@ interface Props {
   [key: string]: number;
 }
 
-export const spacing: Props = {
+// export enum SpacingEnum {
+//   none = 'none',
+//   spacing1 = 'spacing1',
+//   spacing2 = 'spacing2',
+//   spacing4 = 'spacing4',
+//   spacing8 = 'spacing8',
+//   spacing12 = 'spacing12',
+//   spacing16 = 'spacing16',
+//   spacing24 = 'spacing24',
+//   spacing36 = 'spacing36',
+//   spacing48 = 'spacing48',
+//   spacing60 = 'spacing60',
+// }
+
+export type SpacingProps = {
+  none: number;
+  spacing1: number;
+  spacing2: number;
+  spacing4: number;
+  spacing8: number;
+  spacing12: number;
+  spacing16: number;
+  spacing24: number;
+  spacing36: number;
+  spacing48: number;
+  spacing60: number;
+};
+
+export const spacing: SpacingProps = {
   none: 0,
   spacing1: 1,
   spacing2: 2,

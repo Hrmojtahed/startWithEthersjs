@@ -7,9 +7,9 @@ import {
   useHomeNavigation,
 } from '../../routing/Stacks/type';
 
-import {useAppDispatch} from '../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
 
-import Button from '../../components/Button/Button';
+import {Button} from '../../components/Button/Button';
 import TextInput from '../../components/Input/TextInput';
 
 import {spacing} from '../../utils/styles/sizing';
@@ -31,6 +31,7 @@ type Props = HomeStackScreenProp<HomeScreens.Home>;
 function Onboarding(): React.ReactElement<Props> {
   const navigation = useHomeNavigation();
   const dispatch = useAppDispatch();
+  const accounts = useAppSelector(state => state.wallet.accounts);
   const [userInput, setUserInput] = useState<string>('');
   const [isTaped, setIsTaped] = useState(false);
 
@@ -72,7 +73,9 @@ function Onboarding(): React.ReactElement<Props> {
       [
         {
           text: 'Done',
-          onPress: () => navigation.replace(HomeScreens.Home),
+          onPress: () => {
+            navigation.replace(HomeScreens.Home);
+          },
         },
       ],
     );
@@ -89,6 +92,10 @@ function Onboarding(): React.ReactElement<Props> {
     if (clipboard) {
       setUserInput(clipboard);
     }
+  };
+
+  const handleLog = () => {
+    logger.debug('Onboarding', 'handleLog', 'accounts :', accounts);
   };
 
   return (
@@ -112,15 +119,20 @@ function Onboarding(): React.ReactElement<Props> {
         }
       />
       <Button
-        text="Import"
+        label="Import"
         onPress={() => handleImport()}
         disabled={walletImportLoading || !userInput}
         loading={walletImportLoading}
       />
       <Button
-        text="Remove All"
+        label="Remove All"
         onPress={() => handleRemove()}
-        buttonStyle={{marginTop: 32}}
+        customStyle={{Button: {marginTop: 32}}}
+      />
+      <Button
+        label="Log"
+        onPress={() => handleLog()}
+        customStyle={{Button: {marginTop: 32}}}
       />
     </View>
   );

@@ -11,19 +11,36 @@ import {useHomeNavigation} from '../../routing/Stacks/type';
 import {HomeScreens} from '../screen';
 import Text from '../../components/Text/Text';
 import AddressDisplay from '../../components/AddressDisplay';
-import {spacing} from '../../utils/styles/sizing';
+import {iconSizes, spacing} from '../../utils/styles/sizing';
+import TextButton from '../../components/Button/TextButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {openModal} from '../../app/Modals/modalSlice';
+import {ModalName} from '../../app/Modals/constants';
+
+const AngleIcon = (
+  <Ionicons
+    name="chevron-down-sharp"
+    size={iconSizes.icon16}
+    color={colors.primary}
+  />
+);
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
   const navigation = useHomeNavigation();
-  const removeAccount = () => {
-    dispatch(removeAllAccounts());
-    navigation.replace(HomeScreens.Onboarding);
+  const handleOpenModal = () => {
+    dispatch(openModal({name: ModalName.AccountModal}));
   };
   return (
     <View style={styles.container}>
-      <Text variant="title2">{account.accountName}</Text>
+      <TextButton
+        iconPosition="right"
+        iconGap={'spacing2'}
+        icon={AngleIcon}
+        onPress={handleOpenModal}>
+        {account.accountName}
+      </TextButton>
       <AddressDisplay address={account.address} />
       <View style={styles.balanceContainer}>
         <Text variant="body3" style={styles.balanceTitle}>

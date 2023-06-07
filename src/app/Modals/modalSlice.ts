@@ -9,24 +9,32 @@ export type OpenModalParams = {
 
 export interface AppModalState<T> {
   isOpen: boolean;
-  initialState: T;
+  initialState?: T;
 }
 export interface ModalState {
   [ModalName.AccountModal]: AppModalState<undefined>;
 }
-const initialModalState: ModalState = {
+export const initialModalState: ModalState = {
   [ModalName.AccountModal]: {
     isOpen: false,
     initialState: undefined,
   },
 };
 
-const modalSlice = createSlice({
-  name: 'modal',
+const modalReducer = createSlice({
+  name: 'modals',
   initialState: initialModalState,
   reducers: {
-    openModal: (state, action: PayloadAction<OpenModalParams>) => {},
-    closeModal: (state, action: PayloadAction<{name: keyof ModalState}>) => {},
+    openModal: (state, action: PayloadAction<OpenModalParams>) => {
+      const {name, initialState} = action.payload;
+      state[name].isOpen = true;
+      state[name].initialState = initialState;
+    },
+    closeModal: (state, action: PayloadAction<{name: keyof ModalState}>) => {
+      const {name} = action.payload;
+      state[name].isOpen = false;
+      state[name].initialState = undefined;
+    },
     closeAllModal: (state, action) => {},
   },
 });
@@ -37,5 +45,5 @@ export function selectModalState<T extends keyof ModalState>(
   return state => state.modals[name];
 }
 
-export default modalSlice.reducer;
-export const {} = modalSlice.actions;
+export default modalReducer.reducer;
+export const {openModal, closeModal, closeAllModal} = modalReducer.actions;

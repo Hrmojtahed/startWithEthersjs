@@ -7,7 +7,7 @@ type Props = {
   children: JSX.Element;
 };
 
-export function RenderLazyModal({children, name}: Props): JSX.Element | null {
+export function ModalWrapper({children, name}: Props): JSX.Element | null {
   const modalState = useAppSelector(selectModalState(name));
 
   if (!modalState.isOpen) {

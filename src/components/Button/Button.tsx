@@ -1,103 +1,108 @@
 import {
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacityProps,
   ViewStyle,
+  View,
 } from 'react-native';
-import React from 'react';
-import {ButtonType, ButtonTypeEnum} from './type';
+import React, {memo} from 'react';
+import {ButtonEmphasis, ButtonSize, ButtonType, ButtonTypeEnum} from './type';
 import {TouchableOpacity} from 'react-native';
 import {colors} from '../../utils/styles/color';
 import {Typography} from '../../utils/styles/typography';
 import {ActivityIndicator} from 'react-native';
-import {spacing} from '../../utils/styles/sizing';
+import {borderRad, spacing} from '../../utils/styles/sizing';
+import {getButtonProperties} from './utils';
+import Text from '../Text/Text';
+import {StyleProp} from 'react-native';
+
+type ButtonCustomStyle = {
+  Button?: ViewStyle;
+  Label?: TextStyle;
+};
 
 type Props = TouchableOpacityProps & {
   type?: ButtonType;
-  text?: string;
-  children?: JSX.Element;
+  label?: string;
   icon?: JSX.Element;
-
-  buttonStyle?: ViewStyle;
-  textStyle?: TextStyle;
+  customStyle?: ButtonCustomStyle;
   loading?: boolean;
+  fill?: boolean;
+  size?: ButtonSize;
+  emphasis?: ButtonEmphasis;
 };
 
-const Button: React.FC<Props> = ({
-  type = 'fill',
-
-  text,
-  buttonStyle,
-  textStyle,
-  children,
+const _Button: React.FC<Props> = ({
+  type = 'normal',
+  size = ButtonSize.Medium,
+  emphasis = ButtonEmphasis.Primary,
+  fill = false,
+  icon,
+  label,
+  customStyle,
   disabled,
   loading,
   ...props
 }) => {
+  const {
+    backgroundColor,
+    textColor,
+    textVariant,
+    paddingX,
+    paddingY,
+    borderRadius,
+    borderColor,
+    iconPadding,
+  } = getButtonProperties(size, type, emphasis);
+
+  const ButtonStyle: Array<ViewStyle> = [
+    {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      backgroundColor: backgroundColor,
+      paddingHorizontal: spacing[paddingX],
+      paddingVertical: spacing[paddingY],
+      borderRadius: borderRad[borderRadius],
+      borderColor,
+      borderWidth: 1,
+      flex: fill ? 1 : undefined,
+      opacity: disabled ? 0.5 : 1,
+    },
+    customStyle?.Button ?? {},
+  ];
+  const LabelStyle: StyleProp<Array<TextStyle>> = [
+    {
+      color: textColor,
+    },
+    customStyle?.Label ?? {},
+  ];
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       disabled={disabled}
       {...props}
-      style={[
-        styles.btnDefault,
-        type == ButtonTypeEnum.Outline ? styles.outlineBtn : {},
-        disabled ? styles.disabled : {},
-        buttonStyle,
-      ]}>
+      style={ButtonStyle}>
       {loading ? (
         <ActivityIndicator
           animating={loading}
           color={colors.white}
-          style={styles.loading}
+          style={{marginRight: spacing[iconPadding]}}
         />
       ) : null}
-      {text && (
-        <Text
-          style={[
-            styles.defaultText,
-            type == ButtonTypeEnum.Outline ? styles.outlineText : {},
-          ]}>
-          {text}
+      {icon}
+      {icon && <View style={{width: spacing[iconPadding]}} />}
+      {label && (
+        <Text variant={textVariant} style={LabelStyle}>
+          {label}
         </Text>
       )}
-      {children}
     </TouchableOpacity>
   );
 };
 
-export default Button;
+export const Button = memo(_Button);
 
-const styles = StyleSheet.create({
-  btnDefault: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 45,
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    paddingHorizontal: 15,
-    width: '100%',
-  },
-  outlineBtn: {
-    borderWidth: 1,
-    backgroundColor: colors.none,
-    borderColor: colors.primary,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  defaultText: {
-    ...Typography.title3,
-    color: colors.white,
-  },
-  outlineText: {
-    color: colors.primary,
-  },
-  loading: {
-    marginRight: spacing.spacing8,
-  },
-});
+const styles = StyleSheet.create({});

@@ -16,23 +16,26 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ErrorBoundary} from './src/app/ErrorBoundary';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import AppModals from './src/app/Modals/AppModals';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(): JSX.Element {
   return (
-    <SafeAreaProvider>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <BottomSheetModalProvider>
-            <ErrorBoundary>
-              <AppModals />
-              <NavigationContainer>
-                <MainStacks />
-              </NavigationContainer>
-            </ErrorBoundary>
-          </BottomSheetModalProvider>
-        </PersistGate>
-      </Provider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <BottomSheetModalProvider>
+              <ErrorBoundary>
+                <AppModals />
+                <NavigationContainer>
+                  <MainStacks />
+                </NavigationContainer>
+              </ErrorBoundary>
+            </BottomSheetModalProvider>
+          </PersistGate>
+        </Provider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
