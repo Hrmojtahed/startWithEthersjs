@@ -77,8 +77,6 @@ export function WalletStackNavigator(): JSX.Element {
     state => state.wallet.finishedOnboarding,
   );
 
-  console.log('onboarding ', isOnboardingFinished);
-
   return (
     <WalletStack.Navigator initialRouteName={Screens.Import}>
       {isOnboardingFinished ? (

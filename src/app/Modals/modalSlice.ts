@@ -3,7 +3,7 @@ import {ModalName} from './constants';
 import {RootState} from '../../store/store';
 
 export type OpenModalParams = {
-  name: ModalName;
+  name: keyof ModalState;
   initialState?: undefined;
 };
 

@@ -4,27 +4,25 @@ import {colors} from '../utils/styles/color';
 
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {
-  removeAllAccounts,
   selectActiveAccount,
   setFinishedOnboarding,
 } from '../features/wallet/walletSlice';
 
-import {HomeScreens, Screens} from './Screen';
+import {Screens} from './Screen';
 import Text from '../components/Text/Text';
 import AddressDisplay from '../components/AddressDisplay';
 import {iconSizes, spacing} from '../utils/styles/sizing';
-import TextButton from '../components/Button/TextButton';
+import {TextButton} from '../components/Button/TextButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {openModal} from '../app/Modals/modalSlice';
 import {ModalName} from '../app/Modals/constants';
 import {useGetAccountBalance} from '../features/balance/hooks';
-import {GOLD, MATIC} from '../services/constants';
-import {ethers} from 'ethers';
+import {MATIC} from '../services/constants';
+
 import OverlayLoading from '../components/Loading/OverlayLoading';
 import {Button} from '../components/Button/Button';
-import {Token} from '@uniswap/sdk-core';
+
 import {
-  AppStackScreenProp,
   RootStackScreenProp,
   useAppStackNavigation,
 } from '../app/navigation/type';
@@ -53,10 +51,7 @@ const Home = (props: Props): JSX.Element => {
     account,
     !reloadTrigger,
   );
-  console.log('account', account.accountName, ' ', account.address);
-  console.log('isLoading', isLoading);
-  console.log('balance', balance);
-  console.log('error', error);
+
   const reloadBalance = () => {
     setReloadTrigger(true);
   };
@@ -81,13 +76,14 @@ const Home = (props: Props): JSX.Element => {
         iconPosition="right"
         iconGap={'spacing2'}
         icon={AngleIcon}
-        onPress={handleOpenModal}>
+        onPress={handleOpenModal}
+        buttonStyle={{marginBottom: spacing.spacing8}}>
         {account?.accountName}
       </TextButton>
       <AddressDisplay address={account?.address ?? ''} />
       <View style={styles.balanceContainer}>
         <Text variant="body3" style={styles.balanceTitle}>
-          Your Balance{' '}
+          Your Balance
         </Text>
         <Text variant="title1">
           {accountBalance} {'MATIC'}

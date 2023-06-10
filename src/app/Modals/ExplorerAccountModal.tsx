@@ -43,7 +43,7 @@ const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
   const accounts = useAppSelector(state => state.wallet.accounts);
   const numOfAccounts = Object.keys(accounts).length ?? 0;
   const dispatch = useAppDispatch();
-  // const navigation = useAppNavigation();
+
   const accountList = Object.values(accounts);
   const safeArea = useSafeAreaInsets();
 
@@ -101,8 +101,6 @@ const AccountItem = ({
   account,
   onRemovePress,
 }: AccountItemProps): JSX.Element => {
-  const dispatch = useAppDispatch();
-
   return (
     <View style={listItemStyle.itemContainer}>
       <View style={listItemStyle.textContainer}>

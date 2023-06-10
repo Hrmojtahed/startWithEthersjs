@@ -30,10 +30,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducers);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({serializableCheck: false}).concat(
-      importWalletApi.middleware,
-      accountBalance.middleware,
-    ),
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }).concat(importWalletApi.middleware, accountBalance.middleware),
 });
 export const persistor = persistStore(store);
 
