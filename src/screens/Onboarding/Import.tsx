@@ -31,7 +31,7 @@ import {
 
 type Props = RootStackScreenProp<Screens.Import>;
 
-function Import(): React.ReactElement<Props> {
+function Import(props: Props): JSX.Element {
   const navigation = useAppStackNavigation();
   const dispatch = useAppDispatch();
   const accounts = useAppSelector(state => state.wallet.accounts);
@@ -70,7 +70,7 @@ function Import(): React.ReactElement<Props> {
 
     dispatch(addAccount(walletData));
 
-    return Alert.alert(
+    Alert.alert(
       'Wallet imported successfuly',
       `Wallet address\n${walletData.address}`,
       [
@@ -82,13 +82,16 @@ function Import(): React.ReactElement<Props> {
         },
       ],
     );
+    return <></>;
   }
 
   if (error) {
     setIsTaped(false);
     setUserInput('');
     logger.debug('Home', 'error', 'error message :', error);
-    return Alert.alert('Somthing went wrong', `${error.data}`);
+    Alert.alert('Somthing went wrong', `${error.data}`);
+
+    return <></>;
   }
 
   const pasteFromClipboard = async () => {

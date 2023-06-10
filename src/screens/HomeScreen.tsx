@@ -37,7 +37,7 @@ const AngleIcon = (
   />
 );
 type Props = RootStackScreenProp<Screens.Home>;
-const Home = ({}: Props): JSX.Element | void => {
+const Home = (props: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
   const navigation = useAppStackNavigation();
@@ -46,7 +46,7 @@ const Home = ({}: Props): JSX.Element | void => {
   const [accountBalance, setAccountBalance] = useState<string>('');
   if (!account) {
     dispatch(setFinishedOnboarding(false));
-    return;
+    return <OverlayLoading loading={true} />;
   }
   const {isLoading, balance, error} = useGetAccountBalance(
     MATIC,
