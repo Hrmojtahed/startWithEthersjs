@@ -1,3 +1,18 @@
+export enum Screens {
+  WalletStack = 'WalletStack',
+  GalleryStack = 'GalleryStack',
+  BottomTab = 'BottomTab',
+  Home = 'HomeScreen',
+  Import = 'Import',
+  GalleryListScreen = 'GalleryListScreen',
+  GalleryDetailScreen = 'GalleryDetailScreen',
+}
+
+export enum Tabs {
+  Gallery = 'Gallery',
+  wallet = 'Wallet',
+}
+
 export enum HomeScreens {
   Home = 'HomeScreen',
   Onboarding = 'Onboarding',
@@ -13,4 +28,4 @@ export enum RootScreens {
   DetailView = 'DetailView',
 }
 
-export type AppScreen = HomeScreens | GalleryScreens | RootScreens;
+export type AppScreen = Screens;

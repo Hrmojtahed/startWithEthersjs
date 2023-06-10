@@ -1,15 +1,15 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import type {RootStackScreenProp} from '../../routing/Stacks/type';
+import {AppStackScreenProp} from '../../app/navigation/type';
+import {Screens} from '../Screen';
 import Picture from '../../components/Picture/Picture';
-import {RootScreens} from '../screen';
 
 // type Prop = NativeStackScreenProps<RootStackParamList, RootScreens.DetailView>;
 
-const DetailView = ({
+const GalleryDetailScreen = ({
   route,
   navigation,
-}: RootStackScreenProp<RootScreens.DetailView>) => {
+}: AppStackScreenProp<Screens.GalleryDetailScreen>) => {
   // const navigation = useNavigation<RootStackNavigationProp>();
   const {image} = route.params;
   return (
@@ -19,7 +19,7 @@ const DetailView = ({
   );
 };
 
-export default DetailView;
+export default GalleryDetailScreen;
 
 const styles = StyleSheet.create({
   container: {

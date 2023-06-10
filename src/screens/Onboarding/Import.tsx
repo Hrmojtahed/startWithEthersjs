@@ -2,11 +2,6 @@ import {Alert, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../../utils/styles/color';
 
-import {
-  HomeStackScreenProp,
-  useHomeNavigation,
-} from '../../routing/Stacks/type';
-
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 
 import {Button} from '../../components/Button/Button';
@@ -21,15 +16,23 @@ import {
   WalletImportEnum,
   checkSeedPhraseOrPrivateKey,
 } from '../../features/wallet/utils';
-import {addAccount, removeAllAccounts} from '../../features/wallet/walletSlice';
-import {HomeScreens} from '../screen';
+import {
+  addAccount,
+  removeAllAccounts,
+  setFinishedOnboarding,
+} from '../../features/wallet/walletSlice';
+import {HomeScreens, Screens} from '../Screen';
 import Text from '../../components/Text/Text';
 import {getClipboard} from '../../utils/clipboard';
+import {
+  RootStackScreenProp,
+  useAppStackNavigation,
+} from '../../app/navigation/type';
 
-type Props = HomeStackScreenProp<HomeScreens.Home>;
+type Props = RootStackScreenProp<Screens.Import>;
 
-function Onboarding(): React.ReactElement<Props> {
-  const navigation = useHomeNavigation();
+function Import(): React.ReactElement<Props> {
+  const navigation = useAppStackNavigation();
   const dispatch = useAppDispatch();
   const accounts = useAppSelector(state => state.wallet.accounts);
   const [userInput, setUserInput] = useState<string>('');
@@ -74,12 +77,13 @@ function Onboarding(): React.ReactElement<Props> {
         {
           text: 'Done',
           onPress: () => {
-            navigation.replace(HomeScreens.Home);
+            dispatch(setFinishedOnboarding(true));
           },
         },
       ],
     );
   }
+
   if (error) {
     setIsTaped(false);
     setUserInput('');
@@ -138,7 +142,7 @@ function Onboarding(): React.ReactElement<Props> {
   );
 }
 
-export default Onboarding;
+export default Import;
 
 const styles = StyleSheet.create({
   container: {

@@ -10,7 +10,7 @@ interface componentProps {
   // navigation: NativeStackScreenProps<any>;
 }
 
-const ListView = ({}: componentProps) => {
+const GalleryListScreen = ({}: componentProps) => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -28,7 +28,7 @@ const ListView = ({}: componentProps) => {
   );
 };
 
-export default ListView;
+export default GalleryListScreen;
 
 const styles = StyleSheet.create({
   container: {

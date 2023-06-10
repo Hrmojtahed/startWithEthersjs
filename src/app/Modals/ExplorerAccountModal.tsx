@@ -11,8 +11,13 @@ import {Button} from '../../components/Button/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Account} from '../../features/wallet/accounts/type';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
-import {useAppNavigation, useHomeNavigation} from '../../routing/Stacks/type';
-import {HomeScreens} from '../../screens/screen';
+
+import {HomeScreens} from '../../screens/Screen';
+import {navigationRef} from '../../../App';
+import {
+  removeAccount,
+  setFinishedOnboarding,
+} from '../../features/wallet/walletSlice';
 
 const ExplorerAccountModal = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -36,12 +41,21 @@ export default ExplorerAccountModal;
 
 const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
   const accounts = useAppSelector(state => state.wallet.accounts);
+  const numOfAccounts = Object.keys(accounts).length ?? 0;
+  const dispatch = useAppDispatch();
   // const navigation = useAppNavigation();
   const accountList = Object.values(accounts);
   const safeArea = useSafeAreaInsets();
 
   const addWallet = () => {
     onClose();
+  };
+  const removeWallet = (address: Address) => {
+    onClose();
+    if (numOfAccounts <= 1) {
+      dispatch(setFinishedOnboarding(false));
+    }
+    dispatch(removeAccount(address));
   };
   return (
     <View
@@ -50,8 +64,12 @@ const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
         {paddingBottom: spacing.spacing24 + safeArea.bottom},
       ]}>
       <View style={styles.walletListContainer}>
-        {accountList.map((account, index) => (
-          <AccountItem account={account} key={account.accountName} />
+        {accountList?.map(account => (
+          <AccountItem
+            account={account}
+            key={account?.accountName}
+            onRemovePress={removeWallet}
+          />
         ))}
       </View>
       <Button label="Add Wallet" type="outline" onPress={addWallet} />
@@ -64,7 +82,7 @@ const styles = StyleSheet.create({
     padding: spacing.spacing24,
   },
   walletListContainer: {
-    marginBottom: spacing.spacing24,
+    marginBottom: spacing.spacing48,
   },
   addBtn: {},
 });
@@ -76,9 +94,15 @@ const styles = StyleSheet.create({
 
 type AccountItemProps = {
   account: Account;
+  onRemovePress: (address: Address) => void;
 };
 
-const AccountItem = ({account}: AccountItemProps): JSX.Element => {
+const AccountItem = ({
+  account,
+  onRemovePress,
+}: AccountItemProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+
   return (
     <View style={listItemStyle.itemContainer}>
       <View style={listItemStyle.textContainer}>
@@ -96,6 +120,7 @@ const AccountItem = ({account}: AccountItemProps): JSX.Element => {
           emphasis={ButtonEmphasis.Error}
           size={ButtonSize.Small}
           type={'outline'}
+          onPress={() => onRemovePress(account.address)}
         />
       </View>
     </View>

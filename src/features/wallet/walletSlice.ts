@@ -8,6 +8,7 @@ export interface WalletState {
   walletImported: boolean;
   importedId: number;
   activeAccount: Address;
+  finishedOnboarding: boolean;
 }
 
 const initialState: WalletState = {
@@ -15,6 +16,7 @@ const initialState: WalletState = {
   walletImported: false,
   importedId: 0,
   activeAccount: '',
+  finishedOnboarding: false,
 };
 
 const walletSlice = createSlice({
@@ -67,11 +69,19 @@ const walletSlice = createSlice({
       state.activeAccount = '';
       state.importedId = 0;
     },
+    setFinishedOnboarding: (state, action: PayloadAction<boolean>) => {
+      state.finishedOnboarding = action.payload;
+    },
   },
 });
 
-export const {addAccount, removeAccount, editAccount, removeAllAccounts} =
-  walletSlice.actions;
+export const {
+  addAccount,
+  removeAccount,
+  editAccount,
+  removeAllAccounts,
+  setFinishedOnboarding,
+} = walletSlice.actions;
 
 export default walletSlice.reducer;
 
@@ -79,9 +89,10 @@ const selectedWallet = (state: RootState) => state.wallet;
 
 export const selectActiveAccount = createSelector(selectedWallet, wallet => {
   const address = wallet.activeAccount;
+
   if (wallet.accounts[address]) {
     return wallet.accounts[address];
   } else {
-    throw new Error("Wallet doesn't exist");
+    return;
   }
 });

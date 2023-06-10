@@ -5,9 +5,11 @@
  * @format
  */
 
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 import React from 'react';
-import MainStacks from './src/routing/Stacks/MainStacks';
 
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
@@ -17,6 +19,9 @@ import {ErrorBoundary} from './src/app/ErrorBoundary';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import AppModals from './src/app/Modals/AppModals';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {AppStackNavigator} from './src/app/navigation/navigation';
+
+export const navigationRef = createNavigationContainerRef();
 
 function App(): JSX.Element {
   return (
@@ -27,8 +32,8 @@ function App(): JSX.Element {
             <BottomSheetModalProvider>
               <ErrorBoundary>
                 <AppModals />
-                <NavigationContainer>
-                  <MainStacks />
+                <NavigationContainer ref={navigationRef}>
+                  <AppStackNavigator />
                 </NavigationContainer>
               </ErrorBoundary>
             </BottomSheetModalProvider>

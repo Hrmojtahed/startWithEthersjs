@@ -8,6 +8,8 @@ import {
   GALLERY_LIST_COLUMN_NUM,
 } from '../../utils/constants/galleryConstants';
 import {useNavigation} from '@react-navigation/native';
+import {Screens} from '../../screens/Screen';
+import {useAppStackNavigation} from '../../app/navigation/type';
 
 interface ItemProps {
   source: ImageRequireSource;
@@ -15,11 +17,11 @@ interface ItemProps {
 }
 
 const GalleryListItem = ({source, index}: ItemProps) => {
-  const navigation = useNavigation();
+  const navigation = useAppStackNavigation();
   let startAncestor;
   let startNode;
   const goToDetails = (source: ImageRequireSource) => {
-    navigation.navigate('DetailView', {
+    navigation.navigate(Screens.GalleryDetailScreen, {
       image: source,
     });
   };

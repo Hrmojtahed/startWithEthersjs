@@ -52,10 +52,18 @@ export const ERC20_ABI = [
   'function transferOwnership(address)',
 ];
 
-export const goldToken = new Token(
+export const GOLD = new Token(
   SupportedChainId.POLYGON_MUMBAI,
   TokenContracts.goldToken,
   18,
   'GLD',
   'GoldToken',
+);
+
+export const MATIC = new Token(
+  SupportedChainId.POLYGON_MUMBAI,
+  TokenContracts.matic,
+  18,
+  'MATIC',
+  'MATIC',
 );
