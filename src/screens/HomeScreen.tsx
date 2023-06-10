@@ -1,5 +1,11 @@
-import {Alert, StyleSheet, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {colors} from '../utils/styles/color';
 
 import {useAppDispatch, useAppSelector} from '../store/hooks';
@@ -33,6 +39,7 @@ import {
 import TokenBalanceList from '../components/TokenBalanceList/TokenBalanceList';
 import Seprator from '../components/seprator/Seprator';
 import AccountBalance from '../components/Balance/AccountBalance';
+import TransactionTool from '../components/TransactionTool/TransactionTool';
 
 const AngleIcon = (
   <Ionicons
@@ -54,15 +61,14 @@ const Home = (props: Props): JSX.Element => {
     return <OverlayLoading loading={true} />;
   }
 
-  const {isLoading, balances} = useGetBalanceOfTokenList(
+  const {isLoading, balances, refreshing, onRefresh} = useGetBalanceOfTokenList(
     TokenList,
     account,
-    reloadTrigger,
   );
-
+  const overlayLoading = isLoading;
   useEffect(() => {
     setAccountBalance(balances[0]);
-  }, [isLoading]);
+  }, [refreshing]);
 
   const reloadBalance = () => {
     setReloadTrigger(!reloadTrigger);
@@ -71,27 +77,36 @@ const Home = (props: Props): JSX.Element => {
   const handleOpenModal = () => {
     dispatch(openModal({name: ModalName.AccountModal}));
   };
+  if (overlayLoading && !refreshing) {
+    return <OverlayLoading loading={overlayLoading} />;
+  }
 
   return (
-    <View style={styles.container}>
-      {isLoading && <OverlayLoading loading={isLoading} />}
-      <TextButton
-        iconPosition="right"
-        iconGap={'spacing2'}
-        icon={AngleIcon}
-        onPress={handleOpenModal}
-        buttonStyle={{marginBottom: spacing.spacing8}}>
-        {account?.accountName}
-      </TextButton>
-      <AddressDisplay address={account?.address ?? ''} />
-      <Seprator gap="spacing24" />
-      {accountBalance && <AccountBalance item={accountBalance} />}
-      <TokenBalanceList
-        tokenList={balances}
-        onPressToken={token => setAccountBalance(token)}
-      />
-      <Button label="Reload" onPress={reloadBalance} />
-    </View>
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.scrollViewContent}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <View style={styles.container}>
+        <TextButton
+          iconPosition="right"
+          iconGap={'spacing2'}
+          icon={AngleIcon}
+          onPress={handleOpenModal}
+          buttonStyle={{marginBottom: spacing.spacing8}}>
+          {account?.accountName}
+        </TextButton>
+        <AddressDisplay address={account?.address ?? ''} />
+        <Seprator gap="spacing24" />
+        <AccountBalance item={accountBalance} />
+        <TransactionTool />
+        <TokenBalanceList
+          tokenList={balances}
+          onPressToken={token => setAccountBalance(token)}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -109,5 +124,11 @@ const styles = StyleSheet.create({
   },
   balanceTitle: {
     marginBottom: spacing.spacing8,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  scrollView: {
+    backgroundColor: colors.white,
   },
 });

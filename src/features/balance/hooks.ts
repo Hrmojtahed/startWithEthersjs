@@ -18,6 +18,8 @@ export type TokenBalanceItemType = {
 type ListOfBalanceType = {
   balances: TokenBalanceItemType[];
   isLoading: boolean;
+  refreshing: boolean;
+  onRefresh: () => void;
 };
 
 export function useGetAccountBalance(
@@ -44,38 +46,85 @@ export function useGetAccountBalance(
   );
 }
 
+// export function useGetBalanceOfTokenList(
+//   currencyList: Token[],
+//   account: Account,
+//   reload: boolean,
+// ): ListOfBalanceType {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [balances, setBalances] = useState<TokenBalanceItemType[]>([]);
+//   useEffect(() => {
+//     const getBalance = async () => {
+//       setIsLoading(true);
+//       const newBalances: TokenBalanceItemType[] = [];
+
+//       for (const currency of currencyList) {
+//         const value = await getTokenBalanceForAddress(
+//           currency,
+//           account.address,
+//         );
+//         newBalances.push({
+//           token: currency,
+//           balance: value,
+//         });
+//       }
+
+//       setBalances(newBalances);
+//       setIsLoading(false);
+//     };
+
+//     getBalance();
+//   }, [currencyList, account, reload]);
+
+//   return {
+//     isLoading,
+//     balances,
+//   };
+// }
+
 export function useGetBalanceOfTokenList(
   currencyList: Token[],
   account: Account,
-  reload: boolean,
 ): ListOfBalanceType {
   const [isLoading, setIsLoading] = useState(false);
   const [balances, setBalances] = useState<TokenBalanceItemType[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const getBalance = useCallback(async () => {
+    setIsLoading(true);
+    let list: TokenBalanceItemType[] = [];
+
+    for (let i = 0; i < currencyList.length; i++) {
+      const currency = currencyList[i];
+      const balance = await getTokenBalanceForAddress(
+        currency,
+        account.address,
+      );
+
+      list.push({
+        token: currency,
+        balance: balance,
+      });
+    }
+    setBalances(list);
+    setIsLoading(false);
+    setRefreshing(false);
+  }, [currencyList, account]);
+
   useEffect(() => {
-    const getBalance = async () => {
-      setIsLoading(true);
-      const newBalances: TokenBalanceItemType[] = [];
+    getBalance();
+  }, [getBalance]);
 
-      for (const currency of currencyList) {
-        const value = await getTokenBalanceForAddress(
-          currency,
-          account.address,
-        );
-        newBalances.push({
-          token: currency,
-          balance: value,
-        });
-      }
-
-      setBalances(newBalances);
-      setIsLoading(false);
-    };
+  const onRefresh = () => {
+    setRefreshing(true);
 
     getBalance();
-  }, [currencyList, account, reload]);
+  };
 
   return {
     isLoading,
     balances,
+    refreshing,
+    onRefresh,
   };
 }

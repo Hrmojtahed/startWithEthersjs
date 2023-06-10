@@ -23,7 +23,7 @@ const AccountBalance = ({item, style}: Props): JSX.Element => {
       <Text variant="title2" style={styles.text}>
         {token?.name}
       </Text>
-      <Text variant="body2">{balance + ' ' + token?.symbol}</Text>
+      <Text variant="body3">{balance + ' ' + token?.symbol}</Text>
     </View>
   );
 };
