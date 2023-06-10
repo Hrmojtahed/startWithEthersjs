@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors} from '../../utils/styles/color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Screens} from '../../screens/Screen';
+import {Screens, Tabs} from '../../screens/Screen';
 
 import {
   AppStackParamList,
@@ -30,7 +30,7 @@ export function BottomTabNavigator(): JSX.Element {
         tabBarInactiveTintColor: colors.gray,
       }}>
       <Tab.Screen
-        name="Gallery"
+        name={Tabs.Gallery}
         component={GalleryStackNavigator}
         options={{
           tabBarIcon: ({color, size, focused}) => (
@@ -49,7 +49,7 @@ export function BottomTabNavigator(): JSX.Element {
         }}
       />
       <Tab.Screen
-        name="Wallet"
+        name={Tabs.wallet}
         component={WalletStackNavigator}
         options={{
           tabBarIcon: ({color, size, focused}) => (

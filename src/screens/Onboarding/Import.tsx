@@ -57,7 +57,8 @@ function Import(props: Props): JSX.Element {
     const isAddressValid = checkSeedPhraseOrPrivateKey(userInput);
 
     if (isAddressValid == WalletImportEnum.Other) {
-      return Alert.alert('Try again', 'Enter a valid data');
+      Alert.alert('Try again', 'Enter a valid data');
+      return <></>;
     }
     setIsTaped(true);
   };
@@ -87,10 +88,9 @@ function Import(props: Props): JSX.Element {
 
   if (error) {
     setIsTaped(false);
-    setUserInput('');
+    // setUserInput('');
     logger.debug('Home', 'error', 'error message :', error);
     Alert.alert('Somthing went wrong', `${error.data}`);
-
     return <></>;
   }
 

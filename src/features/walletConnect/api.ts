@@ -1,4 +1,8 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
 import {Wallet} from 'ethers';
 import {WalletImportEnum, checkSeedPhraseOrPrivateKey} from '../wallet/utils';
 import {
@@ -31,8 +35,8 @@ export const importWalletApi = createApi({
           }
 
           return {data: wallet};
-        } catch (error: any) {
-          return {error: {status: 500, data: error}};
+        } catch (e: unknown) {
+          return {error: {status: 500, data: e}};
         }
       },
     }),
