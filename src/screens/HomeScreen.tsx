@@ -16,8 +16,12 @@ import {TextButton} from '../components/Button/TextButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {openModal} from '../app/Modals/modalSlice';
 import {ModalName} from '../app/Modals/constants';
-import {useGetAccountBalance} from '../features/balance/hooks';
-import {MATIC} from '../services/constants';
+import {
+  TokenBalanceItemType,
+  useGetAccountBalance,
+  useGetBalanceOfTokenList,
+} from '../features/balance/hooks';
+import {GOLD, MATIC, TokenList} from '../services/constants';
 
 import OverlayLoading from '../components/Loading/OverlayLoading';
 import {Button} from '../components/Button/Button';
@@ -26,6 +30,9 @@ import {
   RootStackScreenProp,
   useAppStackNavigation,
 } from '../app/navigation/type';
+import TokenBalanceList from '../components/TokenBalanceList/TokenBalanceList';
+import Seprator from '../components/seprator/Seprator';
+import AccountBalance from '../components/Balance/AccountBalance';
 
 const AngleIcon = (
   <Ionicons
@@ -39,35 +46,31 @@ const Home = (props: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
   const navigation = useAppStackNavigation();
-  const [reloadTrigger, setReloadTrigger] = useState<boolean>(true);
+  const [reloadTrigger, setReloadTrigger] = useState<boolean>(false);
 
-  const [accountBalance, setAccountBalance] = useState<string>('');
+  const [accountBalance, setAccountBalance] = useState<TokenBalanceItemType>();
   if (!account) {
     dispatch(setFinishedOnboarding(false));
     return <OverlayLoading loading={true} />;
   }
-  const {isLoading, balance, error} = useGetAccountBalance(
-    MATIC,
+
+  const {isLoading, balances} = useGetBalanceOfTokenList(
+    TokenList,
     account,
-    !reloadTrigger,
+    reloadTrigger,
   );
 
+  useEffect(() => {
+    setAccountBalance(balances[0]);
+  }, [isLoading]);
+
   const reloadBalance = () => {
-    setReloadTrigger(true);
+    setReloadTrigger(!reloadTrigger);
   };
 
   const handleOpenModal = () => {
     dispatch(openModal({name: ModalName.AccountModal}));
   };
-
-  if (balance && !isLoading) {
-    setAccountBalance(balance);
-    setReloadTrigger(false);
-  }
-  if (error) {
-    setReloadTrigger(false);
-    console.log('error', error);
-  }
 
   return (
     <View style={styles.container}>
@@ -81,14 +84,12 @@ const Home = (props: Props): JSX.Element => {
         {account?.accountName}
       </TextButton>
       <AddressDisplay address={account?.address ?? ''} />
-      <View style={styles.balanceContainer}>
-        <Text variant="body3" style={styles.balanceTitle}>
-          Your Balance
-        </Text>
-        <Text variant="title1">
-          {accountBalance} {'MATIC'}
-        </Text>
-      </View>
+      <Seprator gap="spacing24" />
+      {accountBalance && <AccountBalance item={accountBalance} />}
+      <TokenBalanceList
+        tokenList={balances}
+        onPressToken={token => setAccountBalance(token)}
+      />
       <Button label="Reload" onPress={reloadBalance} />
     </View>
   );

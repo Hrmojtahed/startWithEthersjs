@@ -1,12 +1,23 @@
 import type {Token} from '@uniswap/sdk-core';
 import type {Account} from '../wallet/accounts/type';
 import {useBalanceQuery} from './api';
-import {useMemo} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {getTokenBalanceForAddress} from './utils';
 
 type BalanceOutput = {
   balance: string | undefined;
   isLoading: boolean;
   error: unknown;
+};
+
+export type TokenBalanceItemType = {
+  token: Token;
+  balance: string;
+};
+
+type ListOfBalanceType = {
+  balances: TokenBalanceItemType[];
+  isLoading: boolean;
 };
 
 export function useGetAccountBalance(
@@ -31,4 +42,40 @@ export function useGetAccountBalance(
     }),
     [data, currency, isLoading, error],
   );
+}
+
+export function useGetBalanceOfTokenList(
+  currencyList: Token[],
+  account: Account,
+  reload: boolean,
+): ListOfBalanceType {
+  const [isLoading, setIsLoading] = useState(false);
+  const [balances, setBalances] = useState<TokenBalanceItemType[]>([]);
+  useEffect(() => {
+    const getBalance = async () => {
+      setIsLoading(true);
+      const newBalances: TokenBalanceItemType[] = [];
+
+      for (const currency of currencyList) {
+        const value = await getTokenBalanceForAddress(
+          currency,
+          account.address,
+        );
+        newBalances.push({
+          token: currency,
+          balance: value,
+        });
+      }
+
+      setBalances(newBalances);
+      setIsLoading(false);
+    };
+
+    getBalance();
+  }, [currencyList, account, reload]);
+
+  return {
+    isLoading,
+    balances,
+  };
 }

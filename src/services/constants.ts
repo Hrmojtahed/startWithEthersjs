@@ -67,3 +67,5 @@ export const MATIC = new Token(
   'MATIC',
   'MATIC',
 );
+
+export const TokenList: Token[] = [MATIC, GOLD];
