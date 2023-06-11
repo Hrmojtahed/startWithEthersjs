@@ -5,16 +5,27 @@ import TouchableArea from '../Button/TouchableArea';
 import {spacing} from '../../utils/styles/sizing';
 import Avatar from '../Avatar/Avatar';
 import Text from '../Text/Text';
+import {Button} from '../Button/Button';
+import {ButtonEmphasis, ButtonSize} from '../Button/type';
 
 type Props = {
   item: TokenBalanceItemType;
   onPress: (token: TokenBalanceItemType) => void;
   disabled?: boolean;
+  onMintToken?: (token: TokenBalanceItemType) => void;
+  mintable?: boolean;
 };
 
-const TokenBalanceItem = ({item, onPress, disabled}: Props): JSX.Element => {
+const TokenBalanceItem = ({
+  item,
+  onPress,
+  disabled,
+  onMintToken,
+  mintable,
+}: Props): JSX.Element => {
   if (!item) return <></>;
   const {token, balance} = item;
+
   return (
     <TouchableArea
       style={styles.container}
@@ -31,6 +42,15 @@ const TokenBalanceItem = ({item, onPress, disabled}: Props): JSX.Element => {
         </Text>
         <Text variant="subtitle1">{balance + ' ' + token.symbol}</Text>
       </View>
+      {mintable && (
+        <Button
+          label="Mint"
+          size={ButtonSize.Small}
+          emphasis={ButtonEmphasis.Success}
+          type="outline"
+          onPress={() => onMintToken?.(item)}
+        />
+      )}
     </TouchableArea>
   );
 };
@@ -44,5 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  textContainer: {},
+  textContainer: {
+    flex: 1,
+  },
 });

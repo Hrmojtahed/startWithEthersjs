@@ -66,21 +66,18 @@ const Home = (props: Props): JSX.Element => {
     account,
   );
   const overlayLoading = isLoading;
-  useEffect(() => {
-    setAccountBalance(balances[0]);
-  }, [refreshing]);
-
-  const reloadBalance = () => {
-    setReloadTrigger(!reloadTrigger);
-  };
 
   const handleOpenModal = () => {
     dispatch(openModal({name: ModalName.AccountModal}));
   };
+  useEffect(() => {
+    if (!isLoading) {
+      setAccountBalance(balances[0]);
+    }
+  }, [isLoading]);
   if (overlayLoading && !refreshing) {
     return <OverlayLoading loading={overlayLoading} />;
   }
-
   return (
     <ScrollView
       style={styles.scrollView}

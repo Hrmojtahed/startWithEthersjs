@@ -6,24 +6,22 @@ import {spacing} from '../../utils/styles/sizing';
 import Text from '../Text/Text';
 
 type Props = {
-  item: TokenBalanceItemType;
+  item?: TokenBalanceItemType;
   style?: ViewStyle | undefined;
 };
 
 const AccountBalance = ({item, style}: Props): JSX.Element => {
-  if (!item) return <></>;
-  const {token, balance} = item;
   return (
     <View style={[styles.container, style]}>
       <Avatar
         size={55}
-        name={token.name?.slice(0, 1) ?? ''}
+        name={item?.token.name?.slice(0, 1) ?? 'T'}
         style={styles.avatar}
       />
       <Text variant="title2" style={styles.text}>
-        {token?.name}
+        {item?.token.name}
       </Text>
-      <Text variant="body3">{balance + ' ' + token?.symbol}</Text>
+      <Text variant="body3">{item?.balance + ' ' + item?.token?.symbol}</Text>
     </View>
   );
 };
