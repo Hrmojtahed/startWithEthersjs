@@ -1,23 +1,30 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {ModalName} from './constants';
+import {ModalName} from '../../app/Modals/constants';
 import {RootState} from '../../store/store';
+import {Token} from '@uniswap/sdk-core';
 
-export type OpenModalParams = {
-  name: keyof ModalState;
+export type OpenModalParams = AccountModalParams | MintModalParams;
+
+type AccountModalParams = {
+  name: ModalName.AccountModal;
   initialState?: undefined;
 };
-
+type MintModalParams = {name: ModalName.MintModal; initialState?: Token};
 export interface AppModalState<T> {
   isOpen: boolean;
   initialState?: T;
 }
 export interface ModalState {
   [ModalName.AccountModal]: AppModalState<undefined>;
+  [ModalName.MintModal]: AppModalState<Token>;
 }
 export const initialModalState: ModalState = {
   [ModalName.AccountModal]: {
     isOpen: false,
     initialState: undefined,
+  },
+  [ModalName.MintModal]: {
+    isOpen: false,
   },
 };
 

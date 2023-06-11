@@ -1,4 +1,4 @@
-import {ethers} from 'ethers';
+import {ethers, providers} from 'ethers';
 import {ALCHEMY_API} from '../utils/config';
 import {BaseProvider} from '@ethersproject/providers';
 

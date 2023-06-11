@@ -48,6 +48,7 @@ const TokenBalanceItem = ({
           size={ButtonSize.Small}
           emphasis={ButtonEmphasis.Success}
           type="outline"
+          // fill={true}
           onPress={() => onMintToken?.(item)}
         />
       )}

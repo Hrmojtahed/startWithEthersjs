@@ -3,10 +3,14 @@ import React from 'react';
 import {ModalWrapper} from '../../components/Modal/ModalWrapper';
 import ExplorerAccountModal from './ExplorerAccountModal';
 import {ModalName} from './constants';
+import MintModal from './MintModal';
 
 const AppModals = () => {
   return (
     <>
+      <ModalWrapper name={ModalName.MintModal}>
+        <MintModal />
+      </ModalWrapper>
       <ModalWrapper name={ModalName.AccountModal}>
         <ExplorerAccountModal />
       </ModalWrapper>

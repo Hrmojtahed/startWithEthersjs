@@ -68,6 +68,7 @@ const _Button: React.FC<Props> = ({
       borderColor,
       borderWidth: 1,
       flex: fill ? 1 : undefined,
+
       opacity: disabled ? 0.5 : 1,
     },
     customStyle?.Button ?? {},
@@ -81,9 +82,9 @@ const _Button: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
+      {...props}
       activeOpacity={0.8}
       disabled={disabled}
-      {...props}
       style={ButtonStyle}>
       {loading ? (
         <ActivityIndicator

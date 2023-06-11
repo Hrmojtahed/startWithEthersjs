@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {BottomSheetModal} from '../../components/Modal/BottomSheetModal';
 import {ModalName} from './constants';
 import Text from '../../components/Text/Text';
-import {closeModal} from './modalSlice';
+import {closeModal} from '../../features/modals/modalSlice';
 import {spacing} from '../../utils/styles/sizing';
 import {Button} from '../../components/Button/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

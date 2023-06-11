@@ -20,7 +20,7 @@ import AddressDisplay from '../components/AddressDisplay';
 import {iconSizes, spacing} from '../utils/styles/sizing';
 import {TextButton} from '../components/Button/TextButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {openModal} from '../app/Modals/modalSlice';
+import {openModal} from '../features/modals/modalSlice';
 import {ModalName} from '../app/Modals/constants';
 import {
   TokenBalanceItemType,
@@ -40,6 +40,10 @@ import TokenBalanceList from '../components/TokenBalanceList/TokenBalanceList';
 import Seprator from '../components/seprator/Seprator';
 import AccountBalance from '../components/Balance/AccountBalance';
 import TransactionTool from '../components/TransactionTool/TransactionTool';
+import {tokenHasMintFunction} from '../features/transfer/utils';
+import {Token} from '@uniswap/sdk-core';
+import {Wallet, ethers, logger} from 'ethers';
+import {ERC20_ABI} from '../utils/config';
 
 const AngleIcon = (
   <Ionicons
@@ -70,6 +74,7 @@ const Home = (props: Props): JSX.Element => {
   const handleOpenModal = () => {
     dispatch(openModal({name: ModalName.AccountModal}));
   };
+
   useEffect(() => {
     if (!isLoading) {
       setAccountBalance(balances[0]);

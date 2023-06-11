@@ -6,16 +6,17 @@ import {
   TextInput as TextInputBase,
   TextStyle,
 } from 'react-native';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {colors} from '../../utils/styles/color';
 import {ViewStyle} from 'react-native';
+import {useBottomSheetInternal} from '@gorhom/bottom-sheet';
 
 type Props = {
   label?: string;
   containerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   icon?: React.ReactElement;
-  iconPosition: 'left' | 'right';
+  iconPosition?: 'left' | 'right';
 } & TextInputProps;
 
 const TextInput: React.FC<Props> = ({
@@ -25,8 +26,29 @@ const TextInput: React.FC<Props> = ({
   labelStyle,
   icon,
   iconPosition,
+  onFocus,
+  onBlur,
   ...props
 }) => {
+  const {shouldHandleKeyboardEvents} = useBottomSheetInternal();
+  const handleOnFocus = useCallback(
+    (args: any) => {
+      shouldHandleKeyboardEvents.value = true;
+      if (onFocus) {
+        onFocus(args);
+      }
+    },
+    [onFocus, shouldHandleKeyboardEvents],
+  );
+  const handleOnBlur = useCallback(
+    (args: any) => {
+      shouldHandleKeyboardEvents.value = false;
+      if (onBlur) {
+        onBlur(args);
+      }
+    },
+    [onBlur, shouldHandleKeyboardEvents],
+  );
   return (
     <View style={[styles.wrapper, containerStyle]}>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
@@ -40,6 +62,8 @@ const TextInput: React.FC<Props> = ({
         <TextInputBase
           style={[styles.inputDefaultStyle, style]}
           placeholderTextColor={colors.gray}
+          onBlur={handleOnBlur}
+          onFocus={handleOnFocus}
           {...props}
         />
       </View>
