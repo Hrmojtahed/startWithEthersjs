@@ -19,16 +19,36 @@ type Props = {
   iconPosition?: 'left' | 'right';
 } & TextInputProps;
 
-const TextInput: React.FC<Props> = ({
+const BottomSheetTextInput: React.FC<Props> = ({
   style,
   containerStyle,
   label,
   labelStyle,
   icon,
   iconPosition,
-
+  onFocus,
+  onBlur,
   ...props
 }) => {
+  const {shouldHandleKeyboardEvents} = useBottomSheetInternal();
+  const handleOnFocus = useCallback(
+    (args: any) => {
+      shouldHandleKeyboardEvents.value = true;
+      if (onFocus) {
+        onFocus(args);
+      }
+    },
+    [onFocus, shouldHandleKeyboardEvents],
+  );
+  const handleOnBlur = useCallback(
+    (args: any) => {
+      shouldHandleKeyboardEvents.value = false;
+      if (onBlur) {
+        onBlur(args);
+      }
+    },
+    [onBlur, shouldHandleKeyboardEvents],
+  );
   return (
     <View style={[styles.wrapper, containerStyle]}>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
@@ -42,6 +62,8 @@ const TextInput: React.FC<Props> = ({
         <TextInputBase
           style={[styles.inputDefaultStyle, style]}
           placeholderTextColor={colors.gray}
+          onBlur={handleOnBlur}
+          onFocus={handleOnFocus}
           {...props}
         />
       </View>
@@ -49,7 +71,7 @@ const TextInput: React.FC<Props> = ({
   );
 };
 
-export default TextInput;
+export default BottomSheetTextInput;
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -2,10 +2,7 @@ import {ethers, providers} from 'ethers';
 import {ALCHEMY_API} from '../utils/config';
 import {BaseProvider} from '@ethersproject/providers';
 
-const alchemyProvider = new ethers.providers.JsonRpcProvider(
-  ALCHEMY_API,
-  'maticmum',
-);
+const alchemyProvider = new ethers.providers.JsonRpcProvider(ALCHEMY_API);
 
 export function getProvider(): BaseProvider {
   return alchemyProvider;

@@ -30,7 +30,6 @@ import {
 import {GOLD, MATIC, TokenList} from '../services/constants';
 
 import OverlayLoading from '../components/Loading/OverlayLoading';
-import {Button} from '../components/Button/Button';
 
 import {
   RootStackScreenProp,
@@ -40,10 +39,8 @@ import TokenBalanceList from '../components/TokenBalanceList/TokenBalanceList';
 import Seprator from '../components/seprator/Seprator';
 import AccountBalance from '../components/Balance/AccountBalance';
 import TransactionTool from '../components/TransactionTool/TransactionTool';
-import {tokenHasMintFunction} from '../features/transfer/utils';
-import {Token} from '@uniswap/sdk-core';
-import {Wallet, ethers, logger} from 'ethers';
-import {ERC20_ABI} from '../utils/config';
+import {Button} from '../components/Button/Button';
+import {mintToken} from '../features/transfer/utils';
 
 const AngleIcon = (
   <Ionicons
@@ -80,6 +77,11 @@ const Home = (props: Props): JSX.Element => {
       setAccountBalance(balances[0]);
     }
   }, [isLoading]);
+
+  const onPressMint = async () => {
+    await mintToken(GOLD, '5', account);
+  };
+
   if (overlayLoading && !refreshing) {
     return <OverlayLoading loading={overlayLoading} />;
   }
@@ -106,6 +108,11 @@ const Home = (props: Props): JSX.Element => {
         <TokenBalanceList
           tokenList={balances}
           onPressToken={token => setAccountBalance(token)}
+        />
+        <Button
+          label="Mint Test"
+          customStyle={{Button: {marginTop: spacing.spacing24}}}
+          onPress={onPressMint}
         />
       </View>
     </ScrollView>

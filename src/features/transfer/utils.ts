@@ -1,32 +1,31 @@
 import {Token} from '@uniswap/sdk-core';
-import {getProvider} from '../../libs/provider';
-import {Contract, ethers} from 'ethers';
-import {ERC20_ABI} from '../../services/constants';
+import {Contract, Wallet, ethers} from 'ethers';
 import {logger} from '../../utils/logger';
+import {ERC20_ABI} from '../../services/constants';
+import {getProvider} from '../../libs/provider';
+import {Account} from '../wallet/accounts/type';
 
 const provider = getProvider();
 
-export async function tokenHasMintFunction(token: Token): Promise<boolean> {
-  // Retrieve the bytecode of the token contract
-  const tokenContract = new ethers.Contract(token.address, ERC20_ABI, provider);
+export async function mintToken(
+  token: Token,
+  amount: string,
+  account: Account,
+) {
+  const wallet = new ethers.Wallet(account._privateKey, provider);
 
-  try {
-    // Call the "mint" function on the token contract
-    const res = await tokenContract.mint(0); // Provide any required arguments for the function call
+  const contract = new Contract(token.address, ERC20_ABI, wallet);
 
-    // If the call succeeds, the "mint" function is implemented in the contract
-    console.log('Token contract has mint function');
+  const unit256Amount = ethers.utils.parseEther(amount);
+  const tx = await contract.mint(unit256Amount);
+  await tx.wait();
 
-    logger.debug(
-      'transfer/utils',
-      'tokenHasMintFunction\n',
-      `${token.name} is mintable `,
-    );
-
-    return true;
-  } catch (error) {
-    // If an error occurs, the "mint" function is not implemented in the contract
-    console.log('Token contract does not have mint function', error);
-    return false;
-  }
+  logger.debug(
+    'transfer/utils',
+    'mintToken',
+    `\nResult`,
+    account._privateKey,
+    wallet.address,
+    tx,
+  );
 }

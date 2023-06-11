@@ -10,6 +10,7 @@ import TextInput from '../../components/Input/TextInput';
 import {Button} from '../../components/Button/Button';
 import {colors} from '../../utils/styles/color';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
+import BottomSheetTextInput from '../../components/Input/BottomSheetTextInput';
 type Props = {};
 const MintModal = ({}: Props): JSX.Element => {
   const modalState = useAppSelector(selectModalState(ModalName.MintModal));
@@ -48,7 +49,7 @@ const MintModal = ({}: Props): JSX.Element => {
         <Text style={{marginTop: spacing.spacing4}} variant="body2">
           Input a number between 0 and 10 for mint.
         </Text>
-        <TextInput
+        <BottomSheetTextInput
           placeholder="Enter number: e.g 3"
           containerStyle={{marginTop: spacing.spacing12}}
           keyboardType="number-pad"

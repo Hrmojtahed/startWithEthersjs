@@ -29,6 +29,8 @@ const walletSlice = createSlice({
         throw new Error('This wallet already exist!');
       } else {
         state.accounts[action.payload.address] = action.payload;
+        state.accounts[action.payload.address]._privateKey =
+          action.payload.privateKey;
         state.accounts[action.payload.address].accountName = `Account ${
           state.importedId + 1
         }`;

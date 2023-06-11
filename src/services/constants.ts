@@ -39,7 +39,7 @@ export const ERC20_ABI = [
   'function decimals() view returns (uint8)',
   'function decreaseAllowance(address,uint256) returns (bool)',
   'function increaseAllowance(address,uint256) returns (bool)',
-  // 'function mint(uint256)',
+  'function mint(uint256)',
   'function name() view returns (string)',
   'function nonces(address) view returns (uint256)',
   'function owner() view returns (address)',
