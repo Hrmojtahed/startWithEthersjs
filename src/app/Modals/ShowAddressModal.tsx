@@ -9,6 +9,7 @@ import {borderRad, spacing} from '../../utils/styles/sizing';
 import {colors} from '../../utils/styles/color';
 import TouchableArea from '../../components/Button/TouchableArea';
 import {setClipboard} from '../../utils/clipboard';
+import QRCode from 'react-qr-code';
 
 const {width, height} = Dimensions.get('window');
 
@@ -28,13 +29,27 @@ const ShowAddressModal = (): JSX.Element => {
     setClipboard(modalState.initialState);
     setIsCopied(true);
   };
+  const onPressQr = () => {
+    if (!modalState.initialState) return;
+    setClipboard(modalState.initialState);
+    setIsCopied(true);
+  };
   return (
     <BottomSheetModal name={ModalName.ShowAddressModal} onClose={close}>
       <View style={styles.container}>
         <Text variant="title1" style={styles.title}>
           Receive
         </Text>
-        <View style={styles.qrCode}></View>
+        <TouchableArea style={styles.qrCode} onPress={onPressQr}>
+          <QRCode
+            size={qr_size}
+            style={{height: 'auto', maxWidth: '100%', width: '100%'}}
+            value={modalState.initialState ?? ''}
+            viewBox={`0 0 ${qr_size} ${qr_size}`}
+            level="M"
+            fgColor={colors.primary}
+          />
+        </TouchableArea>
         <Text variant="body2">Scan address to receive payment</Text>
         <TouchableArea style={styles.address} onPress={copyToClipboard}>
           <View style={{width: '70%'}}>
@@ -68,6 +83,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray,
     marginVertical: spacing.spacing16,
     marginBottom: spacing.spacing36,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     marginBottom: spacing.spacing8,
