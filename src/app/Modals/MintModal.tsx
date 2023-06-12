@@ -1,7 +1,11 @@
 import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {closeModal, selectModalState} from '../../features/modals/modalSlice';
+import {
+  closeModal,
+  openModal,
+  selectModalState,
+} from '../../features/modals/modalSlice';
 import {ModalName} from './constants';
 import {BottomSheetModal} from '../../components/Modal/BottomSheetModal';
 import Text from '../../components/Text/Text';
@@ -11,19 +15,36 @@ import {Button} from '../../components/Button/Button';
 import {colors} from '../../utils/styles/color';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
 import BottomSheetTextInput from '../../components/Input/BottomSheetTextInput';
+import {mintToken} from '../../features/transaction/utils';
+import {selectActiveAccount} from '../../features/wallet/walletSlice';
+import {ethers} from 'ethers';
+import {logger} from '../../utils/logger';
+import {useMintToken} from '../../features/transaction/hooks';
+import {reloadBalance} from '../../features/balance/balanceSlice';
 type Props = {};
 const MintModal = ({}: Props): JSX.Element => {
   const modalState = useAppSelector(selectModalState(ModalName.MintModal));
+  const account = useAppSelector(selectActiveAccount);
   const token = modalState.initialState;
+  const dispatch = useAppDispatch();
+  if (!token) return <></>;
   const [mintValue, setMintValue] = useState<string>('');
   const [error, setError] = useState<string | null>('');
-  const dispatch = useAppDispatch();
+  const {isLoading, onMint, isSuccess, transaction} = useMintToken({
+    token,
+    amount: mintValue,
+  });
+
   const close = () => {
     dispatch(closeModal({name: ModalName.MintModal}));
   };
-  const onSubmit = () => {
-    close();
-  };
+  const onSubmit = useCallback(async () => {
+    onMint();
+  }, [onMint]);
+
+  if (isSuccess) {
+    dispatch(closeModal({name: ModalName.MintModal}));
+  }
 
   const validationInput = (input: string): void => {
     setMintValue(input);
@@ -42,8 +63,21 @@ const MintModal = ({}: Props): JSX.Element => {
     }
   };
 
+  const showApprovedModal = (): void => {
+    if (isSuccess && transaction) {
+      logger.debug('MintModal', 'showApprovedModal', 'Open Approved modal');
+      dispatch(
+        openModal({
+          name: ModalName.ApprovedTransactionModal,
+          initialState: transaction,
+        }),
+      );
+    }
+    close();
+  };
+
   return (
-    <BottomSheetModal name={ModalName.MintModal} onClose={close}>
+    <BottomSheetModal name={ModalName.MintModal} onClose={showApprovedModal}>
       <View style={styles.container}>
         <Text variant="title2">Mint {token?.name}</Text>
         <Text style={{marginTop: spacing.spacing4}} variant="body2">
@@ -66,6 +100,7 @@ const MintModal = ({}: Props): JSX.Element => {
         <View style={styles.wrapper}>
           <Button
             label="Mint Token"
+            loading={isLoading}
             emphasis={ButtonEmphasis.Primary}
             fill={true}
             customStyle={{Button: styles.btn}}

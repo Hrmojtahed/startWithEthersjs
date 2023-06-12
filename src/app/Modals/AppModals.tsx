@@ -4,10 +4,12 @@ import {ModalWrapper} from '../../components/Modal/ModalWrapper';
 import ExplorerAccountModal from './ExplorerAccountModal';
 import {ModalName} from './constants';
 import MintModal from './MintModal';
+import ApprovedTransactionModal from './ApprovedTransactionModal';
 
 const AppModals = () => {
   return (
     <>
+      <ApprovedTransactionModal></ApprovedTransactionModal>
       <ModalWrapper name={ModalName.MintModal}>
         <MintModal />
       </ModalWrapper>

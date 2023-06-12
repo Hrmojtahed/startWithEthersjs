@@ -3,13 +3,23 @@ import {ModalName} from '../../app/Modals/constants';
 import {RootState} from '../../store/store';
 import {Token} from '@uniswap/sdk-core';
 
-export type OpenModalParams = AccountModalParams | MintModalParams;
+import {TransactionState} from '../transaction/type';
+
+export type OpenModalParams =
+  | AccountModalParams
+  | MintModalParams
+  | ApprovedTransactionModal;
 
 type AccountModalParams = {
   name: ModalName.AccountModal;
   initialState?: undefined;
 };
 type MintModalParams = {name: ModalName.MintModal; initialState?: Token};
+
+type ApprovedTransactionModal = {
+  name: ModalName.ApprovedTransactionModal;
+  initialState?: TransactionState;
+};
 export interface AppModalState<T> {
   isOpen: boolean;
   initialState?: T;
@@ -17,6 +27,7 @@ export interface AppModalState<T> {
 export interface ModalState {
   [ModalName.AccountModal]: AppModalState<undefined>;
   [ModalName.MintModal]: AppModalState<Token>;
+  [ModalName.ApprovedTransactionModal]: AppModalState<TransactionState>;
 }
 export const initialModalState: ModalState = {
   [ModalName.AccountModal]: {
@@ -24,6 +35,9 @@ export const initialModalState: ModalState = {
     initialState: undefined,
   },
   [ModalName.MintModal]: {
+    isOpen: false,
+  },
+  [ModalName.ApprovedTransactionModal]: {
     isOpen: false,
   },
 };

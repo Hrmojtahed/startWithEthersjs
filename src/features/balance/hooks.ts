@@ -3,6 +3,8 @@ import type {Account} from '../wallet/accounts/type';
 import {useBalanceQuery} from './api';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {getTokenBalanceForAddress} from './utils';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {logger} from '../../utils/logger';
 
 type BalanceOutput = {
   balance: string | undefined;
@@ -90,6 +92,8 @@ export function useGetBalanceOfTokenList(
   const [balances, setBalances] = useState<TokenBalanceItemType[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const reloadTrigger = useAppSelector(state => state.balance.reloadTrigger);
+
   const getBalance = useCallback(async () => {
     setIsLoading(true);
     let list: TokenBalanceItemType[] = [];
@@ -111,15 +115,23 @@ export function useGetBalanceOfTokenList(
     setRefreshing(false);
   }, [currencyList, account]);
 
-  useEffect(() => {
-    getBalance();
-  }, [getBalance]);
+  const onRefresh = useCallback(() => {
+    logger.debug('balance/hooks', 'useGetBalanceOfTokenList', '\nonRefresh');
 
-  const onRefresh = () => {
     setRefreshing(true);
-
     getBalance();
-  };
+  }, []);
+
+  useEffect(() => {
+    logger.debug(
+      'balance/hooks',
+      'useGetBalanceOfTokenList',
+      '\ngetBalance',
+      '--> ReloadTrigger:',
+      reloadTrigger,
+    );
+    getBalance();
+  }, [getBalance, reloadTrigger]);
 
   return {
     isLoading,

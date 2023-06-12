@@ -14,4 +14,6 @@ export const colors = {
   lightYellow: '#fef485', //fef8ae --> lighter
   red: '#ff0e0e',
   lightRed: '#ff8585', //ffadad --> lighter
+  orange: 'orange',
+  lightOrange: 'lightOrange',
 };

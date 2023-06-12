@@ -13,9 +13,7 @@ const getButtonColor = (emphasis: ButtonEmphasis, type: ButtonType): string => {
     case ButtonEmphasis.Error:
       return colors.red;
     case ButtonEmphasis.Warning:
-      return colors.yellow;
-    default:
-      return colors.primary;
+      return colors.orange;
   }
 };
 const getButtonTextColor = (
@@ -31,9 +29,7 @@ const getButtonTextColor = (
       case ButtonEmphasis.Error:
         return colors.red;
       case ButtonEmphasis.Warning:
-        return colors.yellow;
-      default:
-        return colors.primary;
+        return colors.orange;
     }
   } else {
     return colors.white;
@@ -80,7 +76,7 @@ const getButtonBorderColor = (emphasis: ButtonEmphasis): string => {
     case ButtonEmphasis.Error:
       return colors.red;
     case ButtonEmphasis.Warning:
-      return colors.yellow;
+      return colors.orange;
   }
 };
 const getButtonBorderRadius = (size: ButtonSize): string => {

@@ -40,7 +40,8 @@ import Seprator from '../components/seprator/Seprator';
 import AccountBalance from '../components/Balance/AccountBalance';
 import TransactionTool from '../components/TransactionTool/TransactionTool';
 import {Button} from '../components/Button/Button';
-import {mintToken} from '../features/transfer/utils';
+import {mintToken} from '../features/transaction/utils';
+import {reloadBalance} from '../features/balance/balanceSlice';
 
 const AngleIcon = (
   <Ionicons
@@ -54,8 +55,6 @@ const Home = (props: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
   const navigation = useAppStackNavigation();
-  const [reloadTrigger, setReloadTrigger] = useState<boolean>(false);
-
   const [accountBalance, setAccountBalance] = useState<TokenBalanceItemType>();
   if (!account) {
     dispatch(setFinishedOnboarding(false));
@@ -78,8 +77,9 @@ const Home = (props: Props): JSX.Element => {
     }
   }, [isLoading]);
 
-  const onPressMint = async () => {
-    await mintToken(GOLD, '5', account);
+  const onModalTest = async () => {
+    dispatch(reloadBalance());
+    // dispatch(openModal({name: ModalName.ApprovedTransactionModal}));
   };
 
   if (overlayLoading && !refreshing) {
@@ -110,9 +110,9 @@ const Home = (props: Props): JSX.Element => {
           onPressToken={token => setAccountBalance(token)}
         />
         <Button
-          label="Mint Test"
+          label="Modal Test"
           customStyle={{Button: {marginTop: spacing.spacing24}}}
-          onPress={onPressMint}
+          onPress={onModalTest}
         />
       </View>
     </ScrollView>

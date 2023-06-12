@@ -95,6 +95,6 @@ export const selectActiveAccount = createSelector(selectedWallet, wallet => {
   if (wallet.accounts[address]) {
     return wallet.accounts[address];
   } else {
-    return;
+    throw new Error('Account is not exist.');
   }
 });

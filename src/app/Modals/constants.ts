@@ -4,4 +4,5 @@ export const enum ModalName {
   InputValueForMintTokenModal = 'input-value-for-mint-token-modal',
   TransactionProcessModal = 'transaction-process-modal',
   MintModal = 'mint-modal',
+  ApprovedTransactionModal = 'approved-transaction-modal',
 }
