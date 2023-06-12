@@ -4,11 +4,19 @@ import Text from '../Text/Text';
 import {spacing} from '../../utils/styles/sizing';
 import CircleButton from '../Button/CircleButton';
 import {useAppDispatch} from '../../store/hooks';
+import {openModal} from '../../features/modals/modalSlice';
+import {ModalName} from '../../app/Modals/constants';
 
-const TransactionTool = () => {
+const TransactionTool = ({address}: {address: Address}): JSX.Element => {
   const dispatch = useAppDispatch();
-  const openSendModal = () => {};
-  const openRecieveModal = () => {};
+  const openSendModal = () => {
+    dispatch(openModal({name: ModalName.SendModal}));
+  };
+  const openRecieveModal = () => {
+    dispatch(
+      openModal({name: ModalName.ShowAddressModal, initialState: address}),
+    );
+  };
   return (
     <View style={styles.container}>
       <CircleButton

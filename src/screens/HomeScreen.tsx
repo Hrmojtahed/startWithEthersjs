@@ -104,7 +104,7 @@ const Home = (props: Props): JSX.Element => {
         <AddressDisplay address={account?.address ?? ''} />
         <Seprator gap="spacing24" />
         <AccountBalance item={accountBalance} />
-        <TransactionTool />
+        <TransactionTool address={account.address} />
         <TokenBalanceList
           tokenList={balances}
           onPressToken={token => setAccountBalance(token)}

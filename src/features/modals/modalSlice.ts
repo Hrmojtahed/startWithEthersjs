@@ -8,13 +8,20 @@ import {TransactionState} from '../transaction/type';
 export type OpenModalParams =
   | AccountModalParams
   | MintModalParams
-  | ApprovedTransactionModal;
+  | ApprovedTransactionModal
+  | SendModalParams
+  | ShowAddressModalParams;
 
 type AccountModalParams = {
   name: ModalName.AccountModal;
   initialState?: undefined;
 };
 type MintModalParams = {name: ModalName.MintModal; initialState?: Token};
+type SendModalParams = {name: ModalName.SendModal; initialState?: undefined};
+type ShowAddressModalParams = {
+  name: ModalName.ShowAddressModal;
+  initialState?: Address;
+};
 
 type ApprovedTransactionModal = {
   name: ModalName.ApprovedTransactionModal;
@@ -28,6 +35,8 @@ export interface ModalState {
   [ModalName.AccountModal]: AppModalState<undefined>;
   [ModalName.MintModal]: AppModalState<Token>;
   [ModalName.ApprovedTransactionModal]: AppModalState<TransactionState>;
+  [ModalName.ShowAddressModal]: AppModalState<Address>;
+  [ModalName.SendModal]: AppModalState<undefined>;
 }
 export const initialModalState: ModalState = {
   [ModalName.AccountModal]: {
@@ -38,6 +47,12 @@ export const initialModalState: ModalState = {
     isOpen: false,
   },
   [ModalName.ApprovedTransactionModal]: {
+    isOpen: false,
+  },
+  [ModalName.ShowAddressModal]: {
+    isOpen: false,
+  },
+  [ModalName.SendModal]: {
     isOpen: false,
   },
 };
@@ -56,7 +71,7 @@ const modalReducer = createSlice({
       state[name].isOpen = false;
       state[name].initialState = undefined;
     },
-    closeAllModal: (state, action) => {},
+    closeAllModal: state => {},
   },
 });
 

@@ -5,10 +5,18 @@ import ExplorerAccountModal from './ExplorerAccountModal';
 import {ModalName} from './constants';
 import MintModal from './MintModal';
 import ApprovedTransactionModal from './ApprovedTransactionModal';
+import ShowAddressModal from './ShowAddressModal';
+import SendModal from './SendModal';
 
 const AppModals = () => {
   return (
     <>
+      <ModalWrapper name={ModalName.SendModal}>
+        <SendModal />
+      </ModalWrapper>
+      <ModalWrapper name={ModalName.ShowAddressModal}>
+        <ShowAddressModal />
+      </ModalWrapper>
       <ApprovedTransactionModal></ApprovedTransactionModal>
       <ModalWrapper name={ModalName.MintModal}>
         <MintModal />
