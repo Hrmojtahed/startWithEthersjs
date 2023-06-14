@@ -4,6 +4,7 @@ import {RootState} from '../../store/store';
 import {Token} from '@uniswap/sdk-core';
 
 import {TransactionState} from '../transaction/type';
+import {getKeys} from '../../utils/objects';
 
 export type OpenModalParams =
   | AccountModalParams
@@ -71,7 +72,12 @@ const modalReducer = createSlice({
       state[name].isOpen = false;
       state[name].initialState = undefined;
     },
-    closeAllModal: state => {},
+    closeAllModal: state => {
+      getKeys(state).forEach(modalName => {
+        state[modalName].isOpen = false;
+        state[modalName].initialState = undefined;
+      });
+    },
   },
 });
 

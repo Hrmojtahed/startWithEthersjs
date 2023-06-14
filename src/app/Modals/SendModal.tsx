@@ -101,6 +101,7 @@ const SendModal = (): JSX.Element => {
   return (
     <BottomSheetModal
       name={ModalName.SendModal}
+      isDismissible={!isLoading}
       onClose={() => showApprovedModal()}>
       <Pressable onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
