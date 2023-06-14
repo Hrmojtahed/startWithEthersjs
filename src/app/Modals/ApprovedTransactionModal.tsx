@@ -37,6 +37,7 @@ const ApprovedTransactionModal = (): JSX.Element => {
   const hash = modalState.initialState?.hash;
 
   const close = (): void => {
+    setBtnCopyLabel('Copy');
     dispatch(closeModal({name: ModalName.ApprovedTransactionModal}));
   };
   const copyToClipboard = () => {
@@ -47,11 +48,7 @@ const ApprovedTransactionModal = (): JSX.Element => {
     if (!hash) return;
     openLinkInBrowser(polyganMumbaiExplorerLink(hash));
   };
-  useEffect(() => {
-    return () => {
-      setBtnCopyLabel('Copy');
-    };
-  }, []);
+
   return (
     <Modal
       isVisible={modalState?.isOpen}
