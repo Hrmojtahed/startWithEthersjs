@@ -131,16 +131,6 @@ function Import(props: Props): JSX.Element {
         disabled={walletImportLoading || !userInput}
         loading={walletImportLoading}
       />
-      <Button
-        label="Remove All"
-        onPress={() => handleRemove()}
-        customStyle={{Button: {marginTop: 32}}}
-      />
-      <Button
-        label="Log"
-        onPress={() => handleLog()}
-        customStyle={{Button: {marginTop: 32}}}
-      />
     </View>
   );
 }
