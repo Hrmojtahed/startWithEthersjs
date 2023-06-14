@@ -58,6 +58,7 @@ export function BottomSheetModal({
   isDismissible = true,
   renderBehindInset = false,
   hideKeyboardOnDismiss = false,
+  disableSwipe,
 }: Props): JSX.Element {
   const insets = useSafeAreaInsets();
   const modalRef = useRef<BaseModal>(null);

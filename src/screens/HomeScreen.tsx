@@ -112,21 +112,6 @@ const Home = (props: Props): JSX.Element => {
           tokenList={balances}
           onPressToken={token => setAccountBalance(token)}
         />
-        <Button
-          label="Reload"
-          customStyle={{Button: {marginTop: spacing.spacing24}}}
-          onPress={onModalTest}
-        />
-        <Button
-          label="Log state"
-          customStyle={{Button: {marginTop: spacing.spacing24}}}
-          onPress={() => console.log('reload trigger state : ', reloadTrigger)}
-        />
-        <Button
-          label="Toggle state"
-          customStyle={{Button: {marginTop: spacing.spacing24}}}
-          onPress={() => dispatch(reloadBalance())}
-        />
       </View>
     </ScrollView>
   );

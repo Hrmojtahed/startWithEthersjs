@@ -21,6 +21,7 @@ import {selectActiveAccount} from '../../features/wallet/walletSlice';
 import {logger} from '../../utils/logger';
 import {useMintToken} from '../../features/transaction/hooks';
 import {reloadBalance} from '../../features/balance/balanceSlice';
+import OverlayLoading from '../../components/Loading/OverlayLoading';
 type Props = {};
 const MintModal = ({}: Props): JSX.Element => {
   const modalState = useAppSelector(selectModalState(ModalName.MintModal));
@@ -79,6 +80,7 @@ const MintModal = ({}: Props): JSX.Element => {
 
   return (
     <BottomSheetModal
+      isDismissible={!isLoading}
       name={ModalName.MintModal}
       onClose={() => showApprovedModal()}>
       <View style={styles.container}>
@@ -99,7 +101,6 @@ const MintModal = ({}: Props): JSX.Element => {
         <View style={styles.wrapper}>
           <Button
             label="Mint Token"
-            loading={isLoading}
             emphasis={ButtonEmphasis.Primary}
             fill={true}
             customStyle={{Button: styles.btn}}
@@ -108,6 +109,7 @@ const MintModal = ({}: Props): JSX.Element => {
           />
         </View>
       </View>
+      {isLoading && <OverlayLoading loading={isLoading} />}
     </BottomSheetModal>
   );
 };
