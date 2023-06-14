@@ -1,7 +1,7 @@
 import {ethers, Transaction} from 'ethers';
 
 export enum TransactionType {
-  Normal = 'normal',
+  NormalTransaction = 'normal',
   MintToken = 'mintToken',
 }
 

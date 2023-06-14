@@ -1,41 +1,48 @@
 import {
   StyleSheet,
-  Text,
-  TextInputProps,
+  TextInputProps as BaseTextInputProps,
   View,
   TextInput as TextInputBase,
   TextStyle,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React from 'react';
 import {colors} from '../../utils/styles/color';
 import {ViewStyle} from 'react-native';
-import {useBottomSheetInternal} from '@gorhom/bottom-sheet';
 
-type Props = {
+import Text from '../Text/Text';
+import {spacing} from '../../utils/styles/sizing';
+
+export type TextInputProps = {
   label?: string;
   containerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   icon?: React.ReactElement;
   iconPosition?: 'left' | 'right';
-} & TextInputProps;
+  error?: boolean;
+  errorText?: string;
+} & BaseTextInputProps;
 
-const TextInput: React.FC<Props> = ({
+const TextInput: React.FC<TextInputProps> = ({
   style,
   containerStyle,
   label,
   labelStyle,
   icon,
   iconPosition,
-
+  error,
+  errorText,
   ...props
 }) => {
   return (
     <View style={[styles.wrapper, containerStyle]}>
-      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+      <View>
+        {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+      </View>
       <View
         style={[
           styles.container,
           {flexDirection: iconPosition == 'left' ? 'row' : 'row-reverse'},
+          {borderColor: error ? colors.red : colors.primary},
         ]}>
         {icon}
         {icon && <View style={styles.seprator} />}
@@ -45,6 +52,13 @@ const TextInput: React.FC<Props> = ({
           {...props}
         />
       </View>
+      {error ? (
+        <Text style={styles.errorLabel} variant="subtitle1">
+          {errorText}
+        </Text>
+      ) : (
+        <View style={styles.gap} />
+      )}
     </View>
   );
 };
@@ -80,6 +94,19 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
   },
   seprator: {
-    width: 16,
+    width: spacing.spacing16,
+  },
+  gap: {
+    height: 24,
+  },
+  errorLabel: {
+    marginLeft: spacing.spacing12,
+    marginTop: spacing.spacing2,
+    marginBottom: spacing.spacing8,
+    color: colors.red,
+    fontWeight: '500',
+    letterSpacing: 0.2,
+    width: '100%',
+    fontSize: 13,
   },
 });

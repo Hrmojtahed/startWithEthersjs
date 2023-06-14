@@ -4,7 +4,7 @@ type InitialStateType = {
   reloadTrigger: boolean;
 };
 
-const initialState = {
+const initialState: InitialStateType = {
   reloadTrigger: false,
 };
 

@@ -1,41 +1,36 @@
-import {
-  ActivityIndicator,
-  ColorValue,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {colors} from '../../utils/styles/color';
-import {Typography} from '../../utils/styles/typography';
+import Text from '../Text/Text';
+import {spacing} from '../../utils/styles/sizing';
 
 type Props = {
   loading: boolean;
-  backdropOpacity?: number;
-  indicatorColor?: ColorValue;
+  backgroundColor?: string;
+  color?: string;
+  label?: string;
+  hasLabel?: boolean;
+  opacity?: number;
 };
 
-const OverlayLoading: React.FC<Props> = ({
+const OverlayLoading = ({
   loading,
-  backdropOpacity = 0.5,
-  indicatorColor = colors.white,
-}) => {
-  return loading ? (
+  backgroundColor,
+  opacity = 0.7,
+  color = colors.primary,
+  label = 'Please wait...',
+  hasLabel = true,
+}: Props): JSX.Element => {
+  return (
     <View
       style={[
         styles.container,
-        {backgroundColor: `rgba(0,0,0,${backdropOpacity})`},
+        {backgroundColor: backgroundColor ?? `rgba(255,255,255,${opacity})`},
       ]}>
-      <ActivityIndicator
-        animating={loading}
-        size={'large'}
-        color={indicatorColor}
-      />
-      <Text style={[Typography.body2, {color: indicatorColor, marginTop: 12}]}>
-        Please Wait...
-      </Text>
+      <ActivityIndicator animating={loading} color={color} />
+      {hasLabel && <Text style={[styles.text, {color}]}>{label}</Text>}
     </View>
-  ) : null;
+  );
 };
 
 export default OverlayLoading;
@@ -43,10 +38,10 @@ export default OverlayLoading;
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 100,
-    elevation: 10,
+  },
+  text: {
+    marginVertical: spacing.spacing12,
   },
 });

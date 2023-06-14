@@ -14,7 +14,8 @@ type Props = PropsWithChildren<{
   variant?: keyof TypograpghiVariant;
   textStyle?: StyleProp<TextStyle>;
   buttonStyle?: ViewStyle;
-}>;
+}> &
+  TextProps;
 
 const _TextButton = ({
   children,

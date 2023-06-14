@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from 'react-native-modal';
 import {borderRad, iconSizes, spacing} from '../../utils/styles/sizing';
 import {colors} from '../../utils/styles/color';
@@ -16,6 +16,10 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
 import {TextButton} from '../../components/Button/TextButton';
 import {setClipboard} from '../../utils/clipboard';
+import {
+  openLinkInBrowser,
+  polyganMumbaiExplorerLink,
+} from '../../features/linking/utils';
 
 const {width, height} = Dimensions.get('window');
 
@@ -30,14 +34,24 @@ const ApprovedTransactionModal = (): JSX.Element => {
     selectModalState(ModalName.ApprovedTransactionModal),
   );
 
+  const hash = modalState.initialState?.hash;
+
   const close = (): void => {
     dispatch(closeModal({name: ModalName.ApprovedTransactionModal}));
   };
   const copyToClipboard = () => {
-    setClipboard(modalState.initialState?.hash ?? '');
+    setClipboard(hash ?? '');
     setBtnCopyLabel('Copied!');
   };
-
+  const openPolyganScan = () => {
+    if (!hash) return;
+    openLinkInBrowser(polyganMumbaiExplorerLink(hash));
+  };
+  useEffect(() => {
+    return () => {
+      setBtnCopyLabel('Copy');
+    };
+  }, []);
   return (
     <Modal
       isVisible={modalState?.isOpen}
@@ -69,13 +83,23 @@ const ApprovedTransactionModal = (): JSX.Element => {
           textStyle={{textAlign: 'center'}}>
           {modalState.initialState?.hash}
         </TextButton>
-        <Button
-          label={btnCopyLabel}
-          onPress={copyToClipboard}
-          size={ButtonSize.Small}
-          emphasis={ButtonEmphasis.Warning}
-          type={'outline'}
-        />
+
+        <View style={styles.row}>
+          <Button
+            label={btnCopyLabel}
+            onPress={copyToClipboard}
+            size={ButtonSize.Small}
+            emphasis={ButtonEmphasis.Warning}
+            type={'outline'}
+          />
+          <Button
+            label={'Polygan Scan'}
+            onPress={openPolyganScan}
+            size={ButtonSize.Small}
+            emphasis={ButtonEmphasis.Success}
+            type={'outline'}
+          />
+        </View>
       </View>
     </Modal>
   );
@@ -106,5 +130,12 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginBottom: spacing.spacing12,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+    paddingTop: spacing.spacing12,
   },
 });

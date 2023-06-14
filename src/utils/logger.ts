@@ -1,4 +1,5 @@
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+import {Platform} from 'react-native';
 
 /**
  * Logs a message to console. Additionally sends log to Sentry if using 'error', 'warn', or 'info'.
@@ -64,5 +65,7 @@ function formatMessage(
   message: string,
 ): string {
   const t = new Date();
-  return `${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}: ${t.getMilliseconds()}ms -- ${fileName} # ${functionName} : ${message}`;
+  return `${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}: ${t.getMilliseconds()}ms --${
+    Platform.OS
+  } --${fileName} # ${functionName} : ${message}\n`;
 }

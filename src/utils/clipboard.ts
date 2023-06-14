@@ -17,6 +17,7 @@ export async function getClipboard(): Promise<string | void> {
 
 export function setClipboard(value: string): void {
   try {
+    logger.debug('clipboard', 'setClipboard', 'value', value);
     Clipboard.setStringAsync(value);
   } catch (error) {
     logger.error(

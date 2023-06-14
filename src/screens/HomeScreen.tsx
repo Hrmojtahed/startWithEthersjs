@@ -29,7 +29,7 @@ import {
 } from '../features/balance/hooks';
 import {GOLD, MATIC, TokenList} from '../services/constants';
 
-import OverlayLoading from '../components/Loading/OverlayLoading';
+import ScreenLoading from '../components/Loading/ScreenLoading';
 
 import {
   RootStackScreenProp,
@@ -54,11 +54,12 @@ type Props = RootStackScreenProp<Screens.Home>;
 const Home = (props: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
+  const reloadTrigger = useAppSelector(state => state.balance.reloadTrigger);
   const navigation = useAppStackNavigation();
   const [accountBalance, setAccountBalance] = useState<TokenBalanceItemType>();
   if (!account) {
     dispatch(setFinishedOnboarding(false));
-    return <OverlayLoading loading={true} />;
+    return <ScreenLoading loading={true} />;
   }
 
   const {isLoading, balances, refreshing, onRefresh} = useGetBalanceOfTokenList(
@@ -83,7 +84,9 @@ const Home = (props: Props): JSX.Element => {
   };
 
   if (overlayLoading && !refreshing) {
-    return <OverlayLoading loading={overlayLoading} />;
+    return (
+      <ScreenLoading loading={overlayLoading} indicatorColor={colors.primary} />
+    );
   }
   return (
     <ScrollView
@@ -110,9 +113,19 @@ const Home = (props: Props): JSX.Element => {
           onPressToken={token => setAccountBalance(token)}
         />
         <Button
-          label="Modal Test"
+          label="Reload"
           customStyle={{Button: {marginTop: spacing.spacing24}}}
           onPress={onModalTest}
+        />
+        <Button
+          label="Log state"
+          customStyle={{Button: {marginTop: spacing.spacing24}}}
+          onPress={() => console.log('reload trigger state : ', reloadTrigger)}
+        />
+        <Button
+          label="Toggle state"
+          customStyle={{Button: {marginTop: spacing.spacing24}}}
+          onPress={() => dispatch(reloadBalance())}
         />
       </View>
     </ScrollView>

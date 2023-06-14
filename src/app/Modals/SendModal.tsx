@@ -1,52 +1,127 @@
 import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BottomSheetModal} from '../../components/Modal/BottomSheetModal';
 import {ModalName} from './constants';
 import {useAppDispatch} from '../../store/hooks';
-import {closeModal} from '../../features/modals/modalSlice';
+import {closeModal, openModal} from '../../features/modals/modalSlice';
 import Text from '../../components/Text/Text';
 import {spacing} from '../../utils/styles/sizing';
 import TokenSelectInput from '../../components/Input/TokenSelectInput';
-import TextInput from '../../components/Input/TextInput';
 import BottomSheetTextInput from '../../components/Input/BottomSheetTextInput';
 import {Button} from '../../components/Button/Button';
 import {TokenList} from '../../services/constants';
 import {getClipboard} from '../../utils/clipboard';
+import {useTransferToken} from '../../features/transaction/hooks';
+import {logger} from '../../utils/logger';
+import OverlayLoading from '../../components/Loading/OverlayLoading';
+import {reloadBalance} from '../../features/balance/balanceSlice';
+import {ethers} from 'ethers';
+
+type InputState = {
+  value: string;
+  error?: boolean;
+  errorText?: string;
+};
 
 const SendModal = (): JSX.Element => {
   const [amount, setAmount] = useState<string>('');
+  const [amountError, setAmountError] = useState<{
+    visible: boolean;
+    text?: string;
+  }>();
   const [recieverAddress, setRecieverAddress] = useState<Address>('');
   const [tokenIndex, setTokenIndex] = useState<number>(0);
+
   const dispatch = useAppDispatch();
-  const close = () => {
+
+  const userSelectedToken = TokenList[tokenIndex];
+
+  const {isLoading, transaction, isSuccess, transferToken} = useTransferToken({
+    token: userSelectedToken,
+    amount: amount,
+    recieverAddress,
+  });
+
+  useEffect(() => {
+    console.log('mounted modal, transaction :', transaction);
+    console.log('selectedToken', userSelectedToken.decimals);
+    const value = ethers.utils.parseEther('0.000000000000000521');
+    console.log(
+      'original : 0.000000000000000521\n',
+      `big number: ${value}\nconverted again : ${ethers.utils.formatUnits(
+        value,
+        userSelectedToken.decimals,
+      )}`,
+      value,
+    );
+    return () => {};
+  }, []);
+
+  const close = useCallback(() => {
     dispatch(closeModal({name: ModalName.SendModal}));
+  }, [dispatch]);
+
+  const handleValidation = (val: string) => {
+    setAmount(val);
+    if (isNaN(Number(val))) {
+      setAmountError({visible: true, text: 'Please enter a number.'});
+    } else {
+      setAmountError({visible: false, text: ''});
+    }
   };
+
   const pasteFromClipboard = async () => {
     const clipboard = await getClipboard();
     if (clipboard) {
+      console.log(clipboard);
       setRecieverAddress(clipboard);
     }
   };
+
+  const onSubmit = (): void => {
+    transferToken();
+  };
+  if (transaction && isSuccess) {
+    close();
+  }
+
+  const showApprovedModal = (): void => {
+    if (isSuccess && transaction) {
+      logger.debug('SendModal', 'showApprovedModal', 'Open Approved modal');
+      dispatch(
+        openModal({
+          name: ModalName.ApprovedTransactionModal,
+          initialState: transaction,
+        }),
+      );
+      dispatch(reloadBalance());
+    }
+    close();
+  };
   return (
-    <BottomSheetModal name={ModalName.SendModal} onClose={close}>
+    <BottomSheetModal
+      name={ModalName.SendModal}
+      onClose={() => showApprovedModal()}>
       <Pressable onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <Text variant="title1" style={{marginBottom: spacing.spacing24}}>
             Send to
           </Text>
           <TokenSelectInput
-            style={styles.input}
+            style={styles.selector}
             tokenList={TokenList}
             onSelect={val => setTokenIndex(val)}
             selected={tokenIndex}
           />
           <BottomSheetTextInput
             label="Amount"
-            placeholder="Amount e.g 2.0000"
+            placeholder={`Amount e.g 2.0000 ${userSelectedToken?.symbol}`}
             containerStyle={styles.input}
             keyboardType="number-pad"
-            onChangeText={val => setAmount(val)}
+            onChangeText={val => handleValidation(val)}
             value={amount}
+            error={amountError?.visible}
+            errorText={amountError?.text}
           />
           <BottomSheetTextInput
             label="To"
@@ -56,7 +131,7 @@ const SendModal = (): JSX.Element => {
             onChangeText={val => setRecieverAddress(val)}
             value={recieverAddress}
             icon={
-              <Text variant="title4" onPress={pasteFromClipboard}>
+              <Text variant="title4" onPress={() => pasteFromClipboard()}>
                 Paste
               </Text>
             }
@@ -65,11 +140,13 @@ const SendModal = (): JSX.Element => {
             <Button
               label="Send"
               fill={true}
-              disabled={amount && recieverAddress ? false : true}
+              disabled={amount && recieverAddress && !isLoading ? false : true}
+              onPress={() => onSubmit()}
             />
           </View>
         </View>
       </Pressable>
+      {isLoading && <OverlayLoading loading={isLoading} />}
     </BottomSheetModal>
   );
 };
@@ -82,7 +159,8 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.spacing48,
     alignItems: 'center',
   },
-  input: {
+  input: {},
+  selector: {
     marginBottom: spacing.spacing24,
   },
 });

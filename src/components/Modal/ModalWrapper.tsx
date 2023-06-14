@@ -10,7 +10,7 @@ type Props = {
 export function ModalWrapper({children, name}: Props): JSX.Element | null {
   const modalState = useAppSelector(selectModalState(name));
 
-  if (!modalState?.isOpen) {
+  if (!modalState.isOpen) {
     return null;
   }
   return children;

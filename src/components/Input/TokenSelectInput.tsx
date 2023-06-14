@@ -34,6 +34,7 @@ const TokenSelectInput = ({
         <View style={styles.listContainer}>
           {tokenList.map((item, index) => (
             <TouchableArea
+              key={item.name}
               style={styles.item}
               onPress={() => selectToken(index)}>
               <Text variant="title3">{item.name}</Text>

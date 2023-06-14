@@ -40,7 +40,9 @@ const TokenBalanceItem = ({
         <Text variant="title3" style={{marginBottom: spacing.spacing4}}>
           {token.name}
         </Text>
-        <Text variant="subtitle1">{balance + ' ' + token.symbol}</Text>
+        <Text variant="subtitle1" selectable>
+          {balance + ' ' + token.symbol}
+        </Text>
       </View>
       {mintable && (
         <Button

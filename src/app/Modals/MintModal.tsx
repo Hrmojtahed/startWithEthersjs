@@ -15,9 +15,9 @@ import {Button} from '../../components/Button/Button';
 import {colors} from '../../utils/styles/color';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
 import BottomSheetTextInput from '../../components/Input/BottomSheetTextInput';
-import {mintToken} from '../../features/transaction/utils';
+
 import {selectActiveAccount} from '../../features/wallet/walletSlice';
-import {ethers} from 'ethers';
+
 import {logger} from '../../utils/logger';
 import {useMintToken} from '../../features/transaction/hooks';
 import {reloadBalance} from '../../features/balance/balanceSlice';
@@ -29,7 +29,7 @@ const MintModal = ({}: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   if (!token) return <></>;
   const [mintValue, setMintValue] = useState<string>('');
-  const [error, setError] = useState<string | null>('');
+  const [error, setError] = useState<string>('');
   const {isLoading, onMint, isSuccess, transaction} = useMintToken({
     token,
     amount: mintValue,
@@ -59,7 +59,7 @@ const MintModal = ({}: Props): JSX.Element => {
     } else if (convertedInput > 10) {
       setError('input value must be smaller than 10. ');
     } else {
-      setError(null);
+      setError('');
     }
   };
 
@@ -72,12 +72,15 @@ const MintModal = ({}: Props): JSX.Element => {
           initialState: transaction,
         }),
       );
+      dispatch(reloadBalance());
     }
     close();
   };
 
   return (
-    <BottomSheetModal name={ModalName.MintModal} onClose={showApprovedModal}>
+    <BottomSheetModal
+      name={ModalName.MintModal}
+      onClose={() => showApprovedModal()}>
       <View style={styles.container}>
         <Text variant="title2">Mint {token?.name}</Text>
         <Text style={{marginTop: spacing.spacing4}} variant="body2">
@@ -89,14 +92,10 @@ const MintModal = ({}: Props): JSX.Element => {
           keyboardType="number-pad"
           onChangeText={value => validationInput(value)}
           value={mintValue}
+          error={error ? true : false}
+          errorText={error}
         />
-        {error ? (
-          <Text variant="subtitle1" style={styles.errorText}>
-            {error}
-          </Text>
-        ) : (
-          <View style={styles.empty} />
-        )}
+
         <View style={styles.wrapper}>
           <Button
             label="Mint Token"
