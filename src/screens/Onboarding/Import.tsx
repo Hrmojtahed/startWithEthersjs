@@ -16,6 +16,7 @@ import {
   removeAccount,
   removeAllAccounts,
   setFinishedOnboarding,
+  setIsWalletExsits,
 } from '../../features/wallet/walletSlice';
 import {Screens} from '../Screen';
 import Text from '../../components/Text/Text';
@@ -41,9 +42,7 @@ function Import(props: Props): JSX.Element {
   const navigation = useAppStackNavigation();
   const dispatch = useAppDispatch();
   const accounts = useAppSelector(state => state.wallet.accounts);
-  const isOnboardingFinished = useAppSelector(
-    state => state.wallet.finishedOnboarding,
-  );
+  const isWalletExist = useAppSelector(state => state.wallet.isWalletExist);
   const [userInput, setUserInput] = useState<string>('');
   const [isTaped, setIsTaped] = useState(false);
 
@@ -66,7 +65,7 @@ function Import(props: Props): JSX.Element {
       typeof provider,
     );
     async function addAccountFromWalletConnect(provider: any) {
-      if (provider && isConnected && !isOnboardingFinished) {
+      if (provider && isConnected && !isWalletExist) {
         logger.debug(
           'Import',
           'addAccountFromWalletConnect',
@@ -75,6 +74,7 @@ function Import(props: Props): JSX.Element {
         const data = await exportAccountFromProvider(provider);
         dispatch(addAccount(data));
         dispatch(setFinishedOnboarding(true));
+        dispatch(setIsWalletExsits(true));
       }
     }
 

@@ -35,7 +35,6 @@ const walletSlice = createSlice({
         // add to activate address
         state.activeAccount = address;
         state.importedId += 1;
-        state.isWalletExist = true;
       }
     },
     removeAccount: (state, action: PayloadAction<Address>) => {
@@ -52,7 +51,6 @@ const walletSlice = createSlice({
       } else {
         const firstAddressAfterDelete = Object.keys(state.accounts)[0];
         state.activeAccount = firstAddressAfterDelete;
-        state.isWalletExist = true;
       }
     },
     editAccount: (
@@ -71,9 +69,13 @@ const walletSlice = createSlice({
       state.activeAccount = '';
       state.importedId = 0;
       state.isWalletExist = false;
+      state.finishedOnboarding = false;
     },
     setFinishedOnboarding: (state, action: PayloadAction<boolean>) => {
       state.finishedOnboarding = action.payload;
+    },
+    setIsWalletExsits: (state, action: PayloadAction<boolean>) => {
+      state.isWalletExist = action.payload;
     },
   },
 });
@@ -84,6 +86,7 @@ export const {
   editAccount,
   removeAllAccounts,
   setFinishedOnboarding,
+  setIsWalletExsits,
 } = walletSlice.actions;
 
 export default walletSlice.reducer;

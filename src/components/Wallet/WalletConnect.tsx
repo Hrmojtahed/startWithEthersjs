@@ -10,6 +10,7 @@ import {logger} from '../../utils/logger';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
   removeAccount,
+  removeAllAccounts,
   selectActiveAccount,
 } from '../../features/wallet/walletSlice';
 import {AccountType} from '../../features/wallet/accounts/type';
@@ -23,30 +24,30 @@ const WalletConnect = ({children}: Props): JSX.Element => {
   const isWalletExist = useAppSelector(state => state.wallet.isWalletExist);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   logger.debug(
-  //     'WalletConnect',
-  //     'onMount',
-  //     'WC status : ',
-  //     isConnected,
-  //     typeof provider,
-  //   );
-  //   if (
-  //     !isConnected &&
-  //     isWalletExist &&
-  //     ActiveAccount?.type == AccountType.WalletConnect
-  //   ) {
-  //     logger.debug(
-  //       'WalletConnect',
-  //       'onMount',
-  //       'account status : ',
-  //       ActiveAccount.address,
-  //       isWalletExist,
-  //     );
-  //     dispatch(removeAccount(ActiveAccount.address));
-  //     //Todo : you must deactive account when disconnected WC connection.
-  //   }
-  // }, [isConnected, provider, ActiveAccount, isWalletExist]);
+  useEffect(() => {
+    logger.debug(
+      'WalletConnect',
+      'onMount',
+      'WC status : ',
+      isConnected,
+      typeof provider,
+    );
+    logger.debug(
+      'WalletConnect',
+      'onMount',
+      'Account : ',
+      ActiveAccount,
+      isWalletExist,
+    );
+    if (!isConnected && isWalletExist) {
+      logger.debug(
+        'WalletConnect',
+        'onMount',
+        'delete Disconnected Account successfuly!!',
+      );
+      // dispatch(removeAccount(ActiveAccount.address));
+    }
+  }, [isConnected, provider]);
 
   return (
     <>

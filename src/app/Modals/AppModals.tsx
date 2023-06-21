@@ -9,14 +9,16 @@ import ShowAddressModal from './ShowAddressModal';
 import SendModal from './SendModal';
 import {useAppDispatch} from '../../store/hooks';
 import {closeAllModal} from '../../features/modals/modalSlice';
+import ErrorModal from './ErrorModal';
 
-const AppModals = () => {
+const AppModals = (): JSX.Element => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(closeAllModal());
   }, []);
   return (
     <>
+      <ErrorModal />
       <ModalWrapper name={ModalName.SendModal}>
         <SendModal />
       </ModalWrapper>

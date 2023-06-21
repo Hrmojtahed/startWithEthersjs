@@ -77,9 +77,23 @@ const SendModal = (): JSX.Element => {
       );
       dispatch(reloadBalance());
     }
+    if (error && !isSuccess) {
+      dispatch(
+        openModal({
+          name: ModalName.ErrorModal,
+          initialState: {
+            error: 'Transaction was failed!',
+            message: error,
+          },
+        }),
+      );
+    }
     close();
-  }, [isSuccess, transaction]);
+  }, [isSuccess, transaction, error]);
   if (transaction && isSuccess) {
+    close();
+  }
+  if (error) {
     close();
   }
   return (

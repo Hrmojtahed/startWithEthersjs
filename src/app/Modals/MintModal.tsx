@@ -85,8 +85,16 @@ const MintModal = ({}: Props): JSX.Element => {
       );
       dispatch(reloadBalance());
     }
-    if (error && !isSuccess) {
-      Alert.alert(error);
+    if (mintError && !isSuccess) {
+      dispatch(
+        openModal({
+          name: ModalName.ErrorModal,
+          initialState: {
+            error: 'Mint Token was failed!',
+            message: mintError,
+          },
+        }),
+      );
     }
     close();
   };
