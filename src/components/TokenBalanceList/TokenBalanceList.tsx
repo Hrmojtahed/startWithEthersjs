@@ -2,7 +2,6 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {TokenBalanceItemType} from '../../features/balance/hooks';
 import TokenBalanceItem from './TokenBalanceItem';
-import {tokenHasMintFunction} from '../../features/transaction/utils';
 import {Token} from '@uniswap/sdk-core';
 import {useAppDispatch} from '../../store/hooks';
 import {openModal} from '../../features/modals/modalSlice';

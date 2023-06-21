@@ -9,15 +9,15 @@ import {closeModal} from '../../features/modals/modalSlice';
 import {spacing} from '../../utils/styles/sizing';
 import {Button} from '../../components/Button/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Account} from '../../features/wallet/accounts/type';
+import {Account, AccountType} from '../../features/wallet/accounts/type';
 import {ButtonEmphasis, ButtonSize} from '../../components/Button/type';
 
-import {HomeScreens} from '../../screens/Screen';
-import {navigationRef} from '../../../App';
 import {
   removeAccount,
   setFinishedOnboarding,
 } from '../../features/wallet/walletSlice';
+import {useWeb3Modal} from '@web3modal/react-native';
+import {logger} from '../../utils/logger';
 
 const ExplorerAccountModal = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -42,6 +42,7 @@ export default ExplorerAccountModal;
 const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
   const accounts = useAppSelector(state => state.wallet.accounts);
   const numOfAccounts = Object.keys(accounts).length ?? 0;
+  const {isConnected, provider} = useWeb3Modal();
   const dispatch = useAppDispatch();
 
   const accountList = Object.values(accounts);
@@ -50,11 +51,24 @@ const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
   const addWallet = () => {
     onClose();
   };
-  const removeWallet = (address: Address) => {
+  const removeWallet = async (address: Address, type: AccountType) => {
     onClose();
-    if (numOfAccounts <= 1) {
-      dispatch(setFinishedOnboarding(false));
+    logger.debug(
+      'ExplorerAccountModal',
+      'removeWallet',
+      `WC is Connected: ${isConnected} -- provider : ${typeof provider} `,
+    );
+
+    if (isConnected && accounts[address].type == AccountType.WalletConnect) {
+      const status = await provider.disconnect();
+      logger.debug(
+        'ExplorerAccountModal',
+        'removeWallet',
+        'disconnect provider',
+        status,
+      );
     }
+
     dispatch(removeAccount(address));
   };
   return (
@@ -67,7 +81,7 @@ const ExplorerAccount = ({onClose}: {onClose: () => void}): JSX.Element => {
         {accountList?.map(account => (
           <AccountItem
             account={account}
-            key={account?.accountName}
+            key={account?.name}
             onRemovePress={removeWallet}
           />
         ))}
@@ -94,7 +108,7 @@ const styles = StyleSheet.create({
 
 type AccountItemProps = {
   account: Account;
-  onRemovePress: (address: Address) => void;
+  onRemovePress: (address: Address, type: AccountType) => void;
 };
 
 const AccountItem = ({
@@ -105,7 +119,7 @@ const AccountItem = ({
     <View style={listItemStyle.itemContainer}>
       <View style={listItemStyle.textContainer}>
         <Text style={listItemStyle.text} variant="title2">
-          {account.accountName}
+          {account.name}
         </Text>
         <Text numberOfLines={1} variant="subtitle1">
           {account.address}
@@ -118,7 +132,7 @@ const AccountItem = ({
           emphasis={ButtonEmphasis.Error}
           size={ButtonSize.Small}
           type={'outline'}
-          onPress={() => onRemovePress(account.address)}
+          onPress={() => onRemovePress(account.address, account.type)}
         />
       </View>
     </View>

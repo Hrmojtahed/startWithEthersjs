@@ -1,11 +1,11 @@
 import {Token} from '@uniswap/sdk-core';
 import {Contract, Transaction, Wallet, ethers} from 'ethers';
 import {logger} from '../../utils/logger';
-import {ERC20_ABI} from '../../services/constants';
-import {getProvider} from '../../libs/provider';
+import {Default_Provider, ERC20_ABI} from '../../services/constants';
+import {getProvider} from '../provider/utils';
 import {Account} from '../wallet/accounts/type';
 
-const provider = getProvider();
+const provider = getProvider(Default_Provider);
 
 export async function mintToken(
   token: Token,

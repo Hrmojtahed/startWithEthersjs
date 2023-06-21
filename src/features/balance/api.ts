@@ -1,9 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/dist/query/react';
 import {Account} from '../wallet/accounts/type';
 import {Contract, ethers} from 'ethers';
-import {ERC20_ABI} from '../../services/constants';
+import {Default_Provider, ERC20_ABI} from '../../services/constants';
 import {logger} from '../../utils/logger';
-import {getProvider} from '../../libs/provider';
+import {getProvider} from '../provider/utils';
 
 type BalanceLookupParams = {
   account: Account;
@@ -36,7 +36,7 @@ export const accountBalance = createApi({
 
             return {data: value};
           }
-          const provider = getProvider();
+          const provider = getProvider(Default_Provider);
           const contract = new Contract(currencyAddress, ERC20_ABI, provider);
           const balance = await contract.balanceOf?.(address);
 

@@ -6,9 +6,10 @@ import '@ethersproject/shims';
 
 // Import the ethers library
 import {ethers} from 'ethers';
-import {getProvider} from '../../libs/provider';
+import {getProvider} from '../../features/provider/utils';
+import {Default_Provider} from '../constants';
 
-export const provider = getProvider();
+export const provider = getProvider(Default_Provider);
 
 export const getBalance = async (address: String) => {
   const balance = await provider.getBalance(address.toString());

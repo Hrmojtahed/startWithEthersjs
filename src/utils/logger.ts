@@ -67,5 +67,5 @@ function formatMessage(
   const t = new Date();
   return `${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}: ${t.getMilliseconds()}ms --${
     Platform.OS
-  } --${fileName} # ${functionName} : ${message}\n`;
+  } --${fileName} # ${functionName} : ${message}`;
 }

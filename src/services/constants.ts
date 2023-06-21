@@ -22,7 +22,7 @@ export const TokenContracts = {
   goldToken: '0xEACFea2A61538E9D708Efb372c91faE3695C5F2f',
   matic: '0x0000000000000000000000000000000000001010',
 };
-
+export const Default_Provider = 'ALCHEMY';
 export const MY_WALLET_ADDRESS = '0x1D307Dcd5A7D67064FA77c85bA66e0CD471C7539';
 
 export const ERC20_ABI = [

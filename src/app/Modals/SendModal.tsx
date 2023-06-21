@@ -1,4 +1,4 @@
-import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
+import {Alert, Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {BottomSheetModal} from '../../components/Modal/BottomSheetModal';
 import {ModalName} from './constants';
@@ -36,30 +36,12 @@ const SendModal = (): JSX.Element => {
 
   const userSelectedToken = TokenList[tokenIndex];
 
-  const {isLoading, transaction, isSuccess, transferToken} = useTransferToken({
-    token: userSelectedToken,
-    amount: amount,
-    recieverAddress,
-  });
-
-  useEffect(() => {
-    console.log('mounted modal, transaction :', transaction);
-    console.log('selectedToken', userSelectedToken.decimals);
-    const value = ethers.utils.parseEther('0.000000000000000521');
-    console.log(
-      'original : 0.000000000000000521\n',
-      `big number: ${value}\nconverted again : ${ethers.utils.formatUnits(
-        value,
-        userSelectedToken.decimals,
-      )}`,
-      value,
-    );
-    return () => {};
-  }, []);
-
-  const close = useCallback(() => {
-    dispatch(closeModal({name: ModalName.SendModal}));
-  }, [dispatch]);
+  const {isLoading, transaction, isSuccess, transferToken, error} =
+    useTransferToken({
+      token: userSelectedToken,
+      amount: amount,
+      recieverAddress,
+    });
 
   const handleValidation = (val: string) => {
     setAmount(val);
@@ -81,11 +63,10 @@ const SendModal = (): JSX.Element => {
   const onSubmit = (): void => {
     transferToken();
   };
-  if (transaction && isSuccess) {
-    close();
-  }
-
-  const showApprovedModal = (): void => {
+  const close = useCallback(() => {
+    dispatch(closeModal({name: ModalName.SendModal}));
+  }, [dispatch]);
+  const showApprovedModal = useCallback((): void => {
     if (isSuccess && transaction) {
       logger.debug('SendModal', 'showApprovedModal', 'Open Approved modal');
       dispatch(
@@ -97,11 +78,13 @@ const SendModal = (): JSX.Element => {
       dispatch(reloadBalance());
     }
     close();
-  };
+  }, [isSuccess, transaction]);
+  if (transaction && isSuccess) {
+    close();
+  }
   return (
     <BottomSheetModal
       name={ModalName.SendModal}
-      isDismissible={!isLoading}
       onClose={() => showApprovedModal()}>
       <Pressable onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>

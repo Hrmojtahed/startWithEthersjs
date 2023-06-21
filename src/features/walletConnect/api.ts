@@ -16,9 +16,10 @@ export const importWalletApi = createApi({
   reducerPath: 'importWalletApi',
   baseQuery: fetchBaseQuery({baseUrl: '/'}),
   endpoints: builder => ({
-    getWalletByKey: builder.query<Account, string>({
+    getWalletByKey: builder.query<Wallet, string>({
       queryFn: async (data: string) => {
         try {
+          console.log('here');
           if (data == null || data == '') {
             return {error: {status: 400, data: 'Enter a valid data!!!'}};
           }
@@ -35,7 +36,7 @@ export const importWalletApi = createApi({
           }
 
           return {data: wallet};
-        } catch (e: unknown) {
+        } catch (e: any) {
           return {error: {status: 500, data: e}};
         }
       },

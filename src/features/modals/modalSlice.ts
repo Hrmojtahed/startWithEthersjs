@@ -6,12 +6,18 @@ import {Token} from '@uniswap/sdk-core';
 import {TransactionState} from '../transaction/type';
 import {getKeys} from '../../utils/objects';
 
+type ErrorModal = {
+  error: string;
+  message: string;
+};
+
 export type OpenModalParams =
   | AccountModalParams
   | MintModalParams
   | ApprovedTransactionModal
   | SendModalParams
-  | ShowAddressModalParams;
+  | ShowAddressModalParams
+  | ErrorModalParams;
 
 type AccountModalParams = {
   name: ModalName.AccountModal;
@@ -22,6 +28,10 @@ type SendModalParams = {name: ModalName.SendModal; initialState?: undefined};
 type ShowAddressModalParams = {
   name: ModalName.ShowAddressModal;
   initialState?: Address;
+};
+type ErrorModalParams = {
+  name: ModalName.ErrorModal;
+  initialState?: ErrorModal;
 };
 
 type ApprovedTransactionModal = {
@@ -38,6 +48,7 @@ export interface ModalState {
   [ModalName.ApprovedTransactionModal]: AppModalState<TransactionState>;
   [ModalName.ShowAddressModal]: AppModalState<Address>;
   [ModalName.SendModal]: AppModalState<undefined>;
+  [ModalName.ErrorModal]: AppModalState<ErrorModal>;
 }
 export const initialModalState: ModalState = {
   [ModalName.AccountModal]: {
@@ -54,6 +65,9 @@ export const initialModalState: ModalState = {
     isOpen: false,
   },
   [ModalName.SendModal]: {
+    isOpen: false,
+  },
+  [ModalName.ErrorModal]: {
     isOpen: false,
   },
 };

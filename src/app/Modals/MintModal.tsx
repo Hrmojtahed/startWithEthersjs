@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import React, {useCallback, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
@@ -25,13 +25,18 @@ import OverlayLoading from '../../components/Loading/OverlayLoading';
 type Props = {};
 const MintModal = ({}: Props): JSX.Element => {
   const modalState = useAppSelector(selectModalState(ModalName.MintModal));
-  const account = useAppSelector(selectActiveAccount);
   const token = modalState.initialState;
   const dispatch = useAppDispatch();
   if (!token) return <></>;
   const [mintValue, setMintValue] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const {isLoading, onMint, isSuccess, transaction} = useMintToken({
+  const {
+    isLoading,
+    onMint,
+    isSuccess,
+    transaction,
+    error: mintError,
+  } = useMintToken({
     token,
     amount: mintValue,
   });
@@ -42,10 +47,6 @@ const MintModal = ({}: Props): JSX.Element => {
   const onSubmit = useCallback(async () => {
     onMint();
   }, [onMint]);
-
-  if (isSuccess) {
-    dispatch(closeModal({name: ModalName.MintModal}));
-  }
 
   const validationInput = (input: string): void => {
     setMintValue(input);
@@ -63,10 +64,19 @@ const MintModal = ({}: Props): JSX.Element => {
       setError('');
     }
   };
+  if (mintError) {
+    Alert.alert(mintError);
+  }
 
   const showApprovedModal = (): void => {
+    console.log('showApprovedModal', isSuccess, transaction);
     if (isSuccess && transaction) {
-      logger.debug('MintModal', 'showApprovedModal', 'Open Approved modal');
+      logger.debug(
+        'MintModal',
+        'showApprovedModal',
+        'Open Approved modal',
+        transaction,
+      );
       dispatch(
         openModal({
           name: ModalName.ApprovedTransactionModal,
@@ -75,12 +85,20 @@ const MintModal = ({}: Props): JSX.Element => {
       );
       dispatch(reloadBalance());
     }
+    if (error && !isSuccess) {
+      Alert.alert(error);
+    }
     close();
   };
-
+  if (isSuccess && transaction) {
+    close();
+  }
+  if (mintError) {
+    close();
+  }
   return (
     <BottomSheetModal
-      isDismissible={!isLoading}
+      // isDismissible={!isLoading}
       name={ModalName.MintModal}
       onClose={() => showApprovedModal()}>
       <View style={styles.container}>

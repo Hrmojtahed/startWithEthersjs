@@ -20,6 +20,7 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import AppModals from './src/app/Modals/AppModals';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {AppStackNavigator} from './src/app/navigation/navigation';
+import WalletConnect from './src/components/Wallet/WalletConnect';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -31,10 +32,12 @@ function App(): JSX.Element {
           <PersistGate loading={null} persistor={persistor}>
             <BottomSheetModalProvider>
               <ErrorBoundary>
-                <AppModals />
-                <NavigationContainer ref={navigationRef}>
-                  <AppStackNavigator />
-                </NavigationContainer>
+                <WalletConnect>
+                  <AppModals />
+                  <NavigationContainer ref={navigationRef}>
+                    <AppStackNavigator />
+                  </NavigationContainer>
+                </WalletConnect>
               </ErrorBoundary>
             </BottomSheetModalProvider>
           </PersistGate>

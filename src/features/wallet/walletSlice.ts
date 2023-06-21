@@ -1,22 +1,22 @@
 import {PayloadAction, createSelector, createSlice} from '@reduxjs/toolkit';
-import {Account} from './accounts/type';
+import {Account, AccountType} from './accounts/type';
 import {RootState} from '../../store/store';
 import {useSelector} from 'react-redux';
 
 export interface WalletState {
   accounts: Record<Address, Account>;
-  walletImported: boolean;
   importedId: number;
   activeAccount: Address;
   finishedOnboarding: boolean;
+  isWalletExist: boolean;
 }
 
 const initialState: WalletState = {
   accounts: {},
-  walletImported: false,
   importedId: 0,
   activeAccount: '',
   finishedOnboarding: false,
+  isWalletExist: false,
 };
 
 const walletSlice = createSlice({
@@ -28,16 +28,14 @@ const walletSlice = createSlice({
       if (state.accounts[address]) {
         throw new Error('This wallet already exist!');
       } else {
-        state.accounts[action.payload.address] = action.payload;
-        state.accounts[action.payload.address]._privateKey =
-          action.payload.privateKey;
-        state.accounts[action.payload.address].accountName = `Account ${
-          state.importedId + 1
-        }`;
+        state.accounts[address] = action.payload;
+        state.accounts[address].name = `Wallet ${state.importedId + 1}`;
+        state.accounts[address].active = true;
 
+        // add to activate address
         state.activeAccount = address;
-        state.walletImported = true;
-        state.importedId++;
+        state.importedId += 1;
+        state.isWalletExist = true;
       }
     },
     removeAccount: (state, action: PayloadAction<Address>) => {
@@ -46,12 +44,15 @@ const walletSlice = createSlice({
         throw new Error(`Cannot remove missing account ${address}`);
       }
       delete state.accounts[address];
+
       if (Object.keys(state.accounts).length == 0) {
-        state.walletImported = false;
         state.activeAccount = '';
+        state.finishedOnboarding = false;
+        state.isWalletExist = false;
       } else {
         const firstAddressAfterDelete = Object.keys(state.accounts)[0];
         state.activeAccount = firstAddressAfterDelete;
+        state.isWalletExist = true;
       }
     },
     editAccount: (
@@ -67,9 +68,9 @@ const walletSlice = createSlice({
     },
     removeAllAccounts: state => {
       state.accounts = {};
-      state.walletImported = false;
       state.activeAccount = '';
       state.importedId = 0;
+      state.isWalletExist = false;
     },
     setFinishedOnboarding: (state, action: PayloadAction<boolean>) => {
       state.finishedOnboarding = action.payload;
@@ -91,10 +92,11 @@ const selectedWallet = (state: RootState) => state.wallet;
 
 export const selectActiveAccount = createSelector(selectedWallet, wallet => {
   const address = wallet.activeAccount;
+  return wallet.accounts[address];
+});
 
-  if (wallet.accounts[address]) {
-    return wallet.accounts[address];
-  } else {
-    throw new Error('Account is not exist.');
-  }
+export const newWalletName = createSelector(selectedWallet, wallet => {
+  //returns wallet name for new accounts
+  const id = wallet.importedId;
+  return `Wallet ${id}`;
 });

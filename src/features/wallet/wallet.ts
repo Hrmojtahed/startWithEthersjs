@@ -1,8 +1,9 @@
 import {Wallet} from 'ethers';
-import {getProvider} from '../../libs/provider';
+import {getProvider} from '../provider/utils';
 import {WalletImportEnum, checkSeedPhraseOrPrivateKey} from './utils';
+import {Default_Provider} from '../../services/constants';
 
-const provider = getProvider();
+const provider = getProvider(Default_Provider);
 
 export async function importWalletFromPrivateKey(
   key: string,

@@ -1,3 +1,5 @@
+import {IProviderMetadata} from '@web3modal/react-native';
+
 type providerType = {
   name: string;
   description: string;
@@ -5,11 +7,31 @@ type providerType = {
   icons: string[];
 };
 
-export const WalletConnectMetadata: providerType = {
-  name: '1EX.net ',
-  description: 'React native test for wallet connection',
-  url: 'https://walletconnect.com/',
+export const providerMetadata = {
+  name: 'Simple 1EX',
+  description: 'Connect to your wallet.',
+  url: 'https://1EX.net',
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
+  redirect: {
+    native: 'w3msample://',
+  },
+};
+
+export const sessionParams = {
+  namespaces: {
+    eip155: {
+      methods: [
+        'eth_sendTransaction',
+        'eth_signTransaction',
+        'eth_sign',
+        'personal_sign',
+        'eth_signTypedData',
+      ],
+      chains: ['eip155:80001'],
+      events: ['chainChanged', 'accountsChanged'],
+      rpcMap: {},
+    },
+  },
 };
 
 export const WALLETCONNECT_PROJECT_ID = '8bc9db449b6b6c5e4cfd264e4248d27a';
@@ -29,3 +51,9 @@ export const ERC20_ABI = [
   'function balanceOf(address) view returns (uint)',
   'function decimals() view returns (uint8)',
 ];
+
+// 'eip155:1',
+// 'eip155:56',
+// 'eip155:137',
+// 'eip155:11155111',
+// 'eip155:5',

@@ -6,6 +6,7 @@ import {getTokenBalanceForAddress} from './utils';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {logger} from '../../utils/logger';
 import {reloadBalance} from './balanceSlice';
+import {useProvider} from '../provider/hooks';
 
 type BalanceOutput = {
   balance: string | undefined;
@@ -93,6 +94,7 @@ export function useGetBalanceOfTokenList(
   const [balances, setBalances] = useState<TokenBalanceItemType[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const {provider} = useProvider();
 
   const reloadTrigger = useAppSelector(state => state.balance.reloadTrigger);
 
@@ -105,6 +107,7 @@ export function useGetBalanceOfTokenList(
       const balance = await getTokenBalanceForAddress(
         currency,
         account.address,
+        provider,
       );
 
       list.push({

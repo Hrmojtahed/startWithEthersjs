@@ -5,11 +5,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {colors} from '../utils/styles/color';
 
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {
+  removeAccount,
   selectActiveAccount,
   setFinishedOnboarding,
 } from '../features/wallet/walletSlice';
@@ -42,7 +43,15 @@ import TransactionTool from '../components/TransactionTool/TransactionTool';
 import {Button} from '../components/Button/Button';
 import {mintToken} from '../features/transaction/utils';
 import {reloadBalance} from '../features/balance/balanceSlice';
-
+import {logger} from '../utils/logger';
+import {useWeb3Modal, Web3Modal} from '@web3modal/react-native';
+import {AccountType} from '../features/wallet/accounts/type';
+import {useProvider} from '../features/provider/hooks';
+import {
+  WALLETCONNECT_PROJECT_ID,
+  providerMetadata,
+  sessionParams,
+} from '../utils/config';
 const AngleIcon = (
   <Ionicons
     name="chevron-down-sharp"
@@ -54,20 +63,32 @@ type Props = RootStackScreenProp<Screens.Home>;
 const Home = (props: Props): JSX.Element => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectActiveAccount);
+  const allAccounts = useAppSelector(state => state.wallet.accounts);
   const reloadTrigger = useAppSelector(state => state.balance.reloadTrigger);
   const navigation = useAppStackNavigation();
   const [accountBalance, setAccountBalance] = useState<TokenBalanceItemType>();
+  const {isConnectedWC} = useProvider();
   if (!account) {
     dispatch(setFinishedOnboarding(false));
     return <ScreenLoading loading={true} />;
   }
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return account.type == AccountType.WalletConnect ? (
+          <Text variant="title4">
+            {isConnectedWC ? 'Connected' : 'disconnected'}
+          </Text>
+        ) : null;
+      },
+    });
+  }, [navigation, isConnectedWC]);
   const {isLoading, balances, refreshing, onRefresh} = useGetBalanceOfTokenList(
     TokenList,
     account,
   );
   const overlayLoading = isLoading;
-
   const handleOpenModal = () => {
     dispatch(openModal({name: ModalName.AccountModal}));
   };
@@ -77,11 +98,6 @@ const Home = (props: Props): JSX.Element => {
       setAccountBalance(balances[0]);
     }
   }, [isLoading]);
-
-  const onModalTest = async () => {
-    dispatch(reloadBalance());
-    // dispatch(openModal({name: ModalName.ApprovedTransactionModal}));
-  };
 
   if (overlayLoading && !refreshing) {
     return (
@@ -102,7 +118,7 @@ const Home = (props: Props): JSX.Element => {
           icon={AngleIcon}
           onPress={handleOpenModal}
           buttonStyle={{marginBottom: spacing.spacing8}}>
-          {account?.accountName}
+          {account?.name}
         </TextButton>
         <AddressDisplay address={account?.address ?? ''} />
         <Seprator gap="spacing24" />
